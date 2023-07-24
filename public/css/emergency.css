@@ -1,0 +1,104 @@
+*{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+   
+  
+}
+body {
+  font-family: Arial, sans-serif;
+}
+/* navbar styling */
+nav{
+    background-color: black;
+    height: 100px;
+    width: 100%; 
+ }
+ .logo img{
+ 
+ height: 100px;
+ width: 85px;
+ }
+ nav ul{
+     float: right;
+     margin-right:20px ;
+     justify-content: space-between;
+ }
+ nav ul li{
+     display: inline-block;
+     line-height: 100px;
+     margin: 0 5px;
+     text-transform: uppercase;
+     text-shadow: 3PX 3PX 10PX white;
+ 
+ }
+ nav ul li a {
+     color: white;
+     font-size: 16px;
+ 
+ }
+ .action,a:hover{
+   color: bisque;
+   transition: 0s;
+ 
+ }
+/* navbar close */
+
+/* background image  */
+ .background{
+    background: url(../images/donation.webp);
+    background-size: cover;
+    height: 650px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    place-items: center;
+   
+ }
+
+/* form styling start */
+form {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+select {
+  height: 40px;
+}
+
+label {
+  font-weight: bold;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-color: red;
+}
+/* form styling off */

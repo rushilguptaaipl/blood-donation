@@ -6,35 +6,32 @@ import {
   Patch,
   Param,
   Delete,
+  Render,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { FindAdminDto } from './dto/find-admin.dto';
 import { DonationsService } from 'src/donations/donations.service';
 
-@Controller('admin')
+@Controller()
 export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private readonly donationsService: DonationsService,
   ) {}
 
-  @Post()
-  find(@Body() findAdminDto: FindAdminDto) {
-    return this.donationsService.find(findAdminDto);
+  @Post("/search")
+  @Render('admin')
+  async find(@Body() test) {
+    const data = await this.adminService.find(test);
+    return {data};
   }
 
-  @Get()
-  findAll() {
-    return this.adminService.findAll();
+  @Get("admin")
+  @Render('admin')
+  async findAll() {
+    const data = await this.adminService.findAll();
+    return {data};
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.donationsService.remove(+id);
-  }
+ 
 }

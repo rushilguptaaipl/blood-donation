@@ -6,7 +6,7 @@ export class CreateDonationDto {
   name: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   contact: number;
 
   @IsString()
@@ -14,8 +14,8 @@ export class CreateDonationDto {
   city: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  age: number;
+  @IsString()
+  DOB: string;
 
   @IsString()
   disease: string;
@@ -23,4 +23,8 @@ export class CreateDonationDto {
   @IsString()
   @IsNotEmpty()
   blood_group:string
+
+  @IsString()
+  @IsNotEmpty()
+  email :string
 }

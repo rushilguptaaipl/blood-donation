@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Admin Panel - Blood Donors</title>
+
+</head>
+
+<body>
+  <form action="/search" method="post">
+    <label for="city">Select City:</label>
+    <select id="city" name="city">
+      <option value="" disabled selected>Select City</option>
+      <% data.forEach((item) => { %>
+        <option <%= value= item.city %>> <%= item.city %> </option>
+    <% }) %>
+    </select>
+
+    <label for="blood-group">Select Blood Group:</label>
+    <select id="blood-group" name="blood-group">
+      <option value="" disabled selected>Select Blood Group</option>
+      <option value="A+">A+</option>
+      <option value="A-">A-</option>
+      <option value="B+">B+</option>
+      <option value="B-">B-</option>
+      <option value="AB+">AB+</option>
+      <option value="AB-">AB-</option>
+      <option value="O+">O+</option>
+      <option value="O-">O-</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Phone Number</th>
+      <th>Email</th>
+      <th>Date of Birth</th>
+      <th>Any Disease</th>
+      <th>City</th>
+      <th>Blood Group</th>
+
+    </tr>
+    
+        <% data.forEach((item) => { %>
+            <tr>
+                <td><%= item.id %></td>
+                <td><%= item.name %></td>
+                <td><%= item.contact %></td>
+                <td><%= item.email %></td>
+                <td><%= item.DOB %></td>
+                <td><%= item.disease %></td>
+                <td><%= item.city %></td>
+                <td><%= item.blood_group %></td>
+            </tr>
+            
+        <% }) %>
+    
+  </table>
+</body>
+
+</html>

@@ -21,7 +21,10 @@ export class Donation {
   city: string;
 
   @Column()
-  age: number;
+  email :string
+
+  @Column()
+  DOB: string;
 
   @Column()
   blood_group:string

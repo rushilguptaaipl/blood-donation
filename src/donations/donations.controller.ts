@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Render } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Render } from '@nestjs/common';
 import { DonationsService } from './donations.service';
 import { CreateDonationDto } from './dto/create-donation.dto';
 
@@ -6,14 +6,15 @@ import { CreateDonationDto } from './dto/create-donation.dto';
 export class DonationsController {
   constructor(private readonly donationsService: DonationsService) {}
 
+  
   @Post('registeration')
-  create(@Body() createDonationDto: CreateDonationDto) {
+  create(@Body() createDonationDto: CreateDonationDto , @Res() res: Response) {
     return this.donationsService.create(createDonationDto);
   }
 
-  // @Get("home")
-  // @Render('home')
-  // getHome() {
+  @Get("home")
+  @Render('donation')
+  getDonation() {}
 
-  // }
+ 
 }

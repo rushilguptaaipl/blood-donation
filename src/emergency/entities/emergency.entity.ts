@@ -4,15 +4,21 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedCol
 export class Emergency {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column()
+    patient_name :string
   
     @Column({type:"varchar"})
-    name: string;
+    registerar_name: string;
   
     @Column({ type: 'bigint' })
     contact: number;
   
     @Column({type:"varchar"})
     city: string;
+
+    @Column()
+    email :string
   
     @Column()
     age: number;

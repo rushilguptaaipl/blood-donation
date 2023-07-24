@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Emergency Registration</title>
+ <link rel="stylesheet" href="/css/emergency.css">
+</head>
+
+<body>
+    <nav>
+        <label class="logo"><img src="pic/logo.png" alt="" srcset=""></label>
+        <ul>
+            <li><a class="action" href="Home.html">HOME</a></li>
+            <li><a class="action" href="Donation.html">Donation</a></li>
+            <li><a class="action" href="Emergency.html">Emergency</a></li>
+            <li><a class="action" href="#">ABOUT</a></li>
+        </ul>
+    </nav>
+<div class="background">
+  <form method="post" action="/submit-emergency-form">
+    <label for="patient-name">Name of Patient:</label>
+    <input type="text" id="patient-name" name="patient_name" required>
+
+    <label for="registerer-name">Name of Registerer:</label>
+    <input type="text" id="registerer-name" name="registerar_name" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="number" id="phone" name="contact" pattern="[0-9]{10}" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required>
+
+    <label for="age">Age</label>
+    <input type="number" id="dob" name="age" required><br><br>
+
+    <label for="hospital">Hospital:</label>
+    <input type="text" id="hospital" name="hospital" required>
+
+    <label for="blood-group">Blood Group:</label>
+    <select id="blood-group" name="blood_group" required>
+      <option value="" disabled selected>Select Blood Group</option>
+      <option value="A+">A+</option>
+      <option value="A-">A-</option>
+      <option value="B+">B+</option>
+      <option value="B-">B-</option>
+      <option value="AB+">AB+</option>
+      <option value="AB-">AB-</option>
+      <option value="O+">O+</option>
+      <option value="O-">O-</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+</body>
+
+</html>
