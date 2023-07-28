@@ -3,9 +3,10 @@ import { DonationsService } from './donations.service';
 import { DonationsController } from './donations.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donation } from './entities/donation.entity';
+import { City } from './entities/city.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Donation])],
+  imports:[TypeOrmModule.forFeature([Donation,City])],
   controllers: [DonationsController],
   providers: [DonationsService],
   exports:[DonationsService]

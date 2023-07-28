@@ -8,7 +8,7 @@ export class DonationsController {
 
   
   @Post('registeration')
-  create(@Body() createDonationDto: CreateDonationDto , @Res() res: Response) {
+  create(@Body() createDonationDto: CreateDonationDto) {
     return this.donationsService.create(createDonationDto);
   }
 

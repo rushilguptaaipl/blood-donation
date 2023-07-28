@@ -23,7 +23,8 @@ export class AdminController {
   @Render('admin')
   async find(@Body() test) {
     const data = await this.adminService.find(test);
-    return {data};
+    const cityList = await this.adminService.cityList()
+    return {data,cityList};
   }
 
   @Get("admin")

@@ -3,8 +3,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { City } from './city.entity';
 
 @Entity()
 export class Donation {
@@ -18,9 +20,6 @@ export class Donation {
   contact: number;
 
   @Column()
-  city: string;
-
-  @Column()
   email :string
 
   @Column()
@@ -31,6 +30,9 @@ export class Donation {
 
   @Column({ nullable: true })
   disease: string;
+
+  @ManyToOne(() => City, (city) => city.donation)
+   city : City
 
   @DeleteDateColumn()
   deletedAt?: Date;

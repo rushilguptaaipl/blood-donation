@@ -7,6 +7,7 @@ import { Donation } from './donations/entities/donation.entity';
 import { EmergencyModule } from './emergency/emergency.module';
 import { AdminModule } from './admin/admin.module';
 import { Emergency } from './emergency/entities/emergency.entity';
+import { City } from './donations/entities/city.entity';
 
 
 
@@ -20,7 +21,7 @@ import { Emergency } from './emergency/entities/emergency.entity';
       username: 'root',
       password: '',
       database: 'blood_donation',
-      entities: [Donation,Emergency],
+      entities: [Donation,Emergency,City],
       synchronize: true,
     }),
     EmergencyModule,
