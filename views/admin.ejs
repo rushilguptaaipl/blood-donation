@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -12,12 +12,14 @@
     <select id="city" name="city">
       <option value="" disabled selected>Select City</option>
       <% cityList.forEach((item) => { %>
-        <option <%= value= item %>> <%= item %> </option>
+        <option <%= value= item %>> <%= item.city %> </option>
     <% }) %>
     </select>
 
-    <label for="blood-group">Select Blood Group:</label>
-    <select id="blood-group" name="blood-group">
+    
+
+    <label for="blood_group">Select Blood Group:</label>
+    <select id="blood-group" name="blood_group">
       <option value="" disabled selected>Select Blood Group</option>
       <option value="A+">A+</option>
       <option value="A-">A-</option>
@@ -53,12 +55,86 @@
                 <td><%= item.email %></td>
                 <td><%= item.DOB %></td>
                 <td><%= item.disease %></td>
-                <td><%= item.city %></td>
+                <td><%= item.city.city %></td>
                 <td><%= item.blood_group %></td>
             </tr>
             
         <% }) %>
     
+  </table>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Admin Panel - Blood Donors</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+  <div class="heading"><h1><b>Welcome Admin</b></h1></div>
+  <br>
+<body>
+  <div class="main">
+  <div>
+    <form action="/search" method="post">
+    <select id="city" name="city">
+      <option value="" disabled selected>Select City</option>
+      <% cityList.forEach((item) => { %>
+        <option <%= value= item %>> <%= item.city %> </option>
+    <% }) %>
+    </select>
+  </form>
+  </div>
+  <div>
+    <form>
+   <select id="blood-group" name="blood_group">
+      <option value="" disabled selected>Select Blood Group</option>
+      <option value="A+">A+</option>
+      <option value="A-">A-</option>
+      <option value="B+">B+</option>
+      <option value="B-">B-</option>
+      <option value="AB+">AB+</option>
+      <option value="AB-">AB-</option>
+      <option value="O+">O+</option>
+      <option value="O-">O-</option>
+    </select>
+    <center><button type="submit">Submit</button></center>
+  </div>
+  
+  </form>
+  
+ </div>
+ 
+ 
+ 
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Phone Number</th>
+      <th>Email</th>
+      <th>Date of Birth</th>
+      <th>Any Disease</th>
+      <th>City</th>
+      <th>Blood Group</th>
+
+    </tr>
+    <% data.forEach((item) => { %>
+      <tr>
+          <td><%= item.id %></td>
+          <td><%= item.name %></td>
+          <td><%= item.contact %></td>
+          <td><%= item.email %></td>
+          <td><%= item.DOB %></td>
+          <td><%= item.disease %></td>
+          <td><%= item.city.city %></td>
+          <td><%= item.blood_group %></td>
+      </tr>
+      
+  <% }) %>
+  
   </table>
 </body>
 
