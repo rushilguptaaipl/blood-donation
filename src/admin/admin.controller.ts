@@ -1,7 +1,11 @@
 import { Controller, Get, Post, Body, Render } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { FindAdminDto } from './dto/find-admin.dto';
 import { DonationsService } from 'src/donations/donations.service';
+import { Donation } from 'src/donations/entities/donation.entity';
+import { City } from 'src/city/entity/city.entity';
+import { AdminFindDonationDto } from './dto/findDonation.dto';
+import { deleteDonation } from './dto/delete-donation.dto';
+import { AdminUpdateDonationDto } from './dto/updateDonation.dto';
 
 @Controller()
 export class AdminController {
@@ -12,17 +16,36 @@ export class AdminController {
 
   @Post('/search')
   @Render('admin')
-  async find(@Body() test) {
-    const data = await this.adminService.find(test);
-    const cityList = await this.adminService.cityList();
-    return { data, cityList };
+  async adminFindDonation(@Body() adminFindDonationDto: AdminFindDonationDto) {
+    const donationList: Donation[] = await this.adminService.adminFindDonation(
+      adminFindDonationDto,
+    );
+    const cityList: City[] = await this.adminService.searchCityList();
+    return { donationList, cityList };
   }
 
   @Get('admin')
   @Render('admin')
   async findAll() {
-    const data = await this.adminService.findAll();
-    const cityList = await this.adminService.cityList();
-    return { data, cityList };
+    const donationList: Donation[] = await this.adminService.findAll();
+    const cityList: City[] = await this.adminService.searchCityList();
+    return { donationList, cityList };
+  }
+
+  @Get()
+  async findAllEmergency() {
+    const emergencyList = await this.adminService.findAllEmergency();
+  }
+
+  @Post('delete')
+  async adminDeleteDonation(@Body() deleteDonation: deleteDonation) {
+    return this.adminService.adminDeleteDonation(deleteDonation);
+  }
+
+  @Post('admin/update')
+  async adminUpdateDonation(
+    @Body() adminUpdateDonationDto: AdminUpdateDonationDto,
+  ) {
+    return this.adminService.adminUpdateDonation(adminUpdateDonationDto);
   }
 }

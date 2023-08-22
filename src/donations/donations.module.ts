@@ -3,7 +3,8 @@ import { DonationsService } from './donations.service';
 import { DonationsController } from './donations.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donation } from './entities/donation.entity';
-import { City } from './entities/city.entity';
+import { City } from 'src/city/entity/city.entity';
+
 
 @Module({
   imports:[TypeOrmModule.forFeature([Donation,City])],

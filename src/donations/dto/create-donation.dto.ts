@@ -24,6 +24,9 @@ export class CreateDonationDto {
   @IsNotEmpty()
   blood_group:string
 
+  @IsNotEmpty()
+  gender : "M" | "F"
+
   @IsString()
   @IsNotEmpty()
   email :string

@@ -1,45 +1,94 @@
-import { Injectable } from '@nestjs/common';
-import { FindAdminDto } from './dto/find-admin.dto';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Donation } from 'src/donations/entities/donation.entity';
 import { Repository } from 'typeorm';
-import { City } from 'src/donations/entities/city.entity';
+import { City } from 'src/city/entity/city.entity';
+import { AdminFindDonationDto } from './dto/findDonation.dto';
+import { Emergency } from 'src/emergency/entities/emergency.entity';
+import { deleteDonation } from './dto/delete-donation.dto';
+import { AdminUpdateDonationDto } from './dto/updateDonation.dto';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(Donation)
     private donationRepo: Repository<Donation>,
+    @InjectRepository(Emergency)
+    private readonly emergencyRepository: Repository<Emergency>,
     @InjectRepository(City)
     private cityRepo: Repository<City>,
   ) {}
-  create(createAdminDto: FindAdminDto) {
-    return 'This action adds a new admin';
-  }
 
-  findAll() {
+  findAll(): Promise<Donation[]> {
     return this.donationRepo.find({ relations: { city: true } });
   }
 
-  async find(data) {
-    const { city, blood_group } = data;
-    const donation = await this.donationRepo.find({
+  async adminFindDonation(
+    adminFindDonationDto: AdminFindDonationDto,
+  ): Promise<Donation[]> {
+    const { city, blood_group } = adminFindDonationDto;
+    const donation: Donation[] = await this.donationRepo.find({
       where: { blood_group: blood_group },
       relations: { city: true },
     });
-    const tester = await donation.filter((item) => {
-      return item.city.city === city;
+    const filteredDonation = await donation.filter((item) => {
+      return item.city.city == city;
     });
-    return tester;
+    return filteredDonation;
   }
 
-  async cityList() {
-    const test = await this.cityRepo.find();
-
-    return test;
+  async searchCityList(): Promise<City[]> {
+    const cityList = await this.cityRepo.find();
+    return cityList;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`;
+  async findAllEmergency(): Promise<Emergency[]> {
+    return await this.emergencyRepository.find({ relations: { city: true } });
+  }
+
+  async adminDeleteDonation(deleteDonation: deleteDonation) {
+    const donation: Donation = await this.donationRepo.findOne({
+      where: { id: deleteDonation.id },
+    });
+
+    if (!donation) {
+      throw new UnauthorizedException('user not found');
+    }
+    return await this.donationRepo.softDelete(deleteDonation.id);
+  }
+
+  async adminUpdateDonation(adminUpdateDonationDto: AdminUpdateDonationDto) {
+    const donation: Donation = await this.donationRepo.findOne({
+      where: { id: adminUpdateDonationDto.id },
+      relations: { city: true },
+    });
+
+    if (!donation) {
+      throw new UnauthorizedException('user not found');
+    }
+
+    const updatedDonation = new Donation();
+    updatedDonation.name = adminUpdateDonationDto.name;
+    updatedDonation.blood_group = adminUpdateDonationDto.blood_group;
+    updatedDonation.contact = adminUpdateDonationDto.contact;
+    updatedDonation.disease = adminUpdateDonationDto.disease;
+    updatedDonation.email = adminUpdateDonationDto.email;
+    updatedDonation.gender = adminUpdateDonationDto.gender;
+    updatedDonation.DOB = adminUpdateDonationDto.DOB;
+
+    var { city } = adminUpdateDonationDto;
+
+    if (city) {
+      var cityExists = await this.cityRepo.findOne({ where: { city: city } });
+      if (!cityExists) {
+        cityExists = await this.cityRepo.save({ city });
+      }
+      updatedDonation.city = cityExists;
+    }
+
+    return await this.donationRepo.update(
+      adminUpdateDonationDto.id,
+      updatedDonation,
+    );
   }
 }

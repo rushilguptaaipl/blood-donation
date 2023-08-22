@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -6,10 +7,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { City } from './city.entity';
+import { City } from '../../city/entity/city.entity';
 
 @Entity()
-export class Donation {
+export class Donation extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,19 +21,22 @@ export class Donation {
   contact: number;
 
   @Column()
-  email :string
+  email: string;
 
   @Column()
   DOB: string;
 
   @Column()
-  blood_group:string
+  blood_group: string;
 
   @Column({ nullable: true })
   disease: string;
 
+  @Column()
+  gender: string;
+
   @ManyToOne(() => City, (city) => city.donation)
-   city : City
+  city: City;
 
   @DeleteDateColumn()
   deletedAt?: Date;

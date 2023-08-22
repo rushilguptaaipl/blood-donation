@@ -7,7 +7,9 @@ import { Donation } from './donations/entities/donation.entity';
 import { EmergencyModule } from './emergency/emergency.module';
 import { AdminModule } from './admin/admin.module';
 import { Emergency } from './emergency/entities/emergency.entity';
-import { City } from './donations/entities/city.entity';
+import { City } from './city/entity/city.entity';
+import { CityModule } from './city/city.module';
+
 
 
 
@@ -18,14 +20,15 @@ import { City } from './donations/entities/city.entity';
       type: 'mysql',
       port: 3306,
       host: 'localhost',
-      username: 'root',
-      password: '',
+      username: 'admin',
+      password: 'redhat',
       database: 'blood_donation',
       entities: [Donation,Emergency,City],
       synchronize: true,
     }),
     EmergencyModule,
     AdminModule,
+    CityModule
   ],
   controllers: [AppController],
   providers: [AppService],

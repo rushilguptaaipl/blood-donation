@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Donation } from './entities/donation.entity';
 import { Repository } from 'typeorm';
 import { FindAdminDto } from 'src/admin/dto/find-admin.dto';
-import { City } from './entities/city.entity';
+import { City } from 'src/city/entity/city.entity';
 
 @Injectable()
 export class DonationsService {
@@ -16,62 +16,39 @@ export class DonationsService {
   ) {}
 
   // create the donation entry in the donation table
-  async create(createDonationDto: CreateDonationDto) {
+  async create(createDonationDto: CreateDonationDto) : Promise<Donation> {
     const { city, ...donation_details } = createDonationDto;
 
-    const donationExist: Donation[] = await this.donationRepo.find({
+    let donationExist: Donation = await this.donationRepo.findOne({
       where: {
         name: donation_details.name,
         DOB: donation_details.DOB,
         blood_group: donation_details.blood_group,
-        contact : donation_details.contact,
-        email : donation_details.email
+        contact: donation_details.contact,
+        email: donation_details.email,
       },
       relations: ['city'],
     });
 
-    if(donationExist){
-      return new ConflictException("user already exists");
+    if (donationExist) {
+      throw new ConflictException('user already exists');
     }
 
-    const cityExists: City = await this.cityRepo.findOne({
+   donationExist =  await this.donationRepo.save(donation_details)
+
+    var cityExists: City = await this.cityRepo.findOne({
       where: { city: city },
       relations: ['donation'],
     });
-    if (!cityExists) {
-      await this.cityRepo.save({ city: city });
-      const cityExists: City = await this.cityRepo.findOne({
-        where: { city: city },
-        relations: ['donation'],
-      });
-      await this.donationRepo.save(donation_details);
-      const donationExist: Donation[] = await this.donationRepo.find({
-        where: {
-          name: donation_details.name,
-          DOB: donation_details.DOB,
-          blood_group: donation_details.blood_group,
-        },
-        relations: ['city'],
-      });
-      cityExists.donation = donationExist;
-      //  donationExist.city = cityExists
-      //  return this.donationRepo.save(donationExist);
-      return this.cityRepo.save(cityExists);
-    } else {
-      await this.donationRepo.save(donation_details);
-      const donationExist: Donation[] = await this.donationRepo.find({
-        where: {
-          name: donation_details.name,
-          DOB: donation_details.DOB,
-          blood_group: donation_details.blood_group,
-          contact : donation_details.contact,
-          email : donation_details.email
-        },
-        relations: ['city'],
-      });
-      cityExists.donation = donationExist;
-      return this.cityRepo.save(cityExists);
+
+    if(!cityExists)
+    {
+       cityExists  = await this.cityRepo.save({city})
     }
+
+    donationExist.city = cityExists;
+
+    return await this.donationRepo.save(donationExist);
   }
 
   //find the donations entry by applying filters from admin controller
