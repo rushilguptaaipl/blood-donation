@@ -10,9 +10,6 @@ import { Emergency } from './emergency/entities/emergency.entity';
 import { City } from './city/entity/city.entity';
 import { CityModule } from './city/city.module';
 
-
-
-
 @Module({
   imports: [
     DonationsModule,

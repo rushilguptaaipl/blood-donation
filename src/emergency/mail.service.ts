@@ -11,21 +11,21 @@ export class MailService {
 
     await this.transactionalEmailsApi.setApiKey(
       0,
-      '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',
+      configService.get('SENDINBLUE_APIKEY')
     );
 
     return await this.transactionalEmailsApi.sendTransacEmail({
       sender: {
-        name: 'ashriya infotech',
-        email: 'rushil.aipl@gmail.com',
+        name: configService.get('SENDINBLUE_NAME'),
+        email: configService.get('SENDINBLUE_SENDER'),
       },
       to: [
         {
-          email: 'rushil.gupta3@gmail.com',
+          email: configService.get('SENDINBLUE_ADMIN'),
         },
       ],
       replyTo: {
-        email: 'rushil.aipl@gmail.com',
+        email: configService.get('SENDINBLUE_REPLYTO'),
       },
       subject: 'Emergency Alert',
       htmlContent:
