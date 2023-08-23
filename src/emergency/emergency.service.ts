@@ -15,7 +15,6 @@ export class EmergencyService {
     private readonly emergencyRepo: Repository<Emergency>,
     @InjectRepository(City)
     private readonly cityRepository: Repository<City>,
-    private transactionalEmailsApi: TransactionalEmailsApi,
     private mailService: MailService,
   ) {}
   async create(createEmergencyDto: CreateEmergencyDto) {

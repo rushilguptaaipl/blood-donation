@@ -1,63 +1,56 @@
 *{
-    padding: 0;
-    margin: 0;
-    text-decoration: none;
-    list-style: none;
-   
-  
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
 }
+
 body {
   font-family: Arial, sans-serif;
+
 }
-/* navbar styling */
+/* navbar styling  */
 nav{
-    background-color: black;
-    height: 100px;
-    width: 100%; 
- }
- .logo img{
- 
- height: 100px;
- width: 85px;
- }
- nav ul{
-     float: right;
-     margin-right:20px ;
-     justify-content: space-between;
- }
- nav ul li{
-     display: inline-block;
-     line-height: 100px;
-     margin: 0 5px;
-     text-transform: uppercase;
-     text-shadow: 3PX 3PX 10PX white;
- 
- }
- nav ul li a {
-     color: white;
-     font-size: 16px;
- 
- }
- .action,a:hover{
-   color: bisque;
-   transition: 0s;
- 
- }
-/* navbar close */
+background-color: black;
+color: #000000;
+padding: 30px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.logo{
+font-size: 24px;
+font-weight: bold;
+color: red;
+text-shadow: 1px 1px 2px red;
 
-/* background image  */
- .background{
-    background: url(../images/donation.webp);
-    background-size: cover;
-    height: 650px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    place-items: center;
-   
- }
+}
 
-/* form styling start */
+.key:hover{
+color: greenyellow;
+}
+
+
+.keys{
+display: flex;
+}
+.key{
+margin-left: 20px;
+text-decoration: none;
+color: #fff;
+}
+/* background image styling */
+.background{
+  background: url(../images/donation.webp);
+  background-size: cover;
+  height: 650px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  
+}
+/* form styling */
 form {
   max-width: 400px;
   margin: auto;
@@ -69,7 +62,7 @@ form {
 
 input[type="text"],
 input[type="email"],
-input[type="tel"],
+input[type="number"],
 select {
   width: 100%;
   padding: 12px;
@@ -87,6 +80,7 @@ label {
   font-weight: bold;
 }
 
+/* button styling */
 button {
   background-color: #4CAF50;
   color: white;
@@ -101,4 +95,3 @@ button {
 button:hover {
   background-color: red;
 }
-/* form styling off */

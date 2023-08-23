@@ -22,9 +22,6 @@ export class Emergency {
   @Column({ type: 'bigint' })
   contact: number;
 
-  // @Column({ type: 'varchar' })
-  // city: string;
-
   @ManyToOne(() => City, (city) => city.emergency)
    city : City
 
