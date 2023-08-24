@@ -30,9 +30,9 @@ export class EmergencyService {
 
     emergency.city = cityExists;
     
+    await this.emergencyRepo.save(emergency);
+   return  await this.mailService.sendUserConfirmation(createEmergencyDto);
 
-    await this.mailService.sendUserConfirmation(createEmergencyDto);
-
-    return await this.emergencyRepo.save(emergency);
+   
   }
 }
