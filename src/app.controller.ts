@@ -10,6 +10,10 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('adminpanel')
+  @Render('adminhome')
+  renderAdminPanel(){
+  }
 
   
  

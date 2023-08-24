@@ -34,7 +34,7 @@ export class AdminController {
     return { donationList, cityList };
   }
 
-  @Get('admin')
+  @Get('admindonation')
   @Render('Donationadmin')
   async findAll() {
     const donationList: Donation[] = await this.adminService.findAll();
@@ -50,7 +50,7 @@ export class AdminController {
   }
 
   @Get('deletedonation')
-  @Redirect('admin')
+  @Redirect('admindonation')
   async adminDeleteDonation(@Query() deleteDonation: deleteEmergencyDto) {
     let id = parseInt(deleteDonation.id);
     return this.adminService.adminDeleteDonation(id);

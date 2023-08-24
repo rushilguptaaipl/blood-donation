@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Render } from '@nestjs/common';
+import { Controller, Get, Post, Body, Render, Redirect } from '@nestjs/common';
 import { CityService } from './city.service';
 import { CreateCityDto } from './dto/createCity.dto';
 import { DeleteCityDto } from './dto/deleteCity.dto';
@@ -9,16 +9,19 @@ export class CityController {
   private readonly cityService : CityService
   ) {}
  
-  @Post()
+  @Post('addcity')
+  @Redirect('list-city')
   adminCreateCity(@Body()createCityDto:CreateCityDto)
   {
     return this.cityService.adminCreateCity(createCityDto)
   }
 
   @Get("list-city")
-  adminListCity()
+  @Render("city")
+  async adminListCity()
   {
-    return this.cityService.adminListCity()
+    const citylist = await this.cityService.adminListCity()
+    return {citylist}
   }
 
   @Post()
