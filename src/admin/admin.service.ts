@@ -46,20 +46,20 @@ export class AdminService {
     return await this.emergencyRepository.find({ relations: { city: true } });
   }
 
-  async adminDeleteDonation(deleteDonation: deleteDonation) {
+  async adminDeleteDonation(id:number) {
     const donation: Donation = await this.donationRepo.findOne({
-      where: { id: deleteDonation.id },
+      where: { id: id },
     });
 
     if (!donation) {
       throw new UnauthorizedException('user not found');
     }
-    return await this.donationRepo.softDelete(deleteDonation.id);
+    return await this.donationRepo.softDelete(id);
   }
 
-  async adminUpdateDonation(adminUpdateDonationDto: AdminUpdateDonationDto) {
+  async adminUpdateDonation(adminUpdateDonationDto: AdminUpdateDonationDto , id:number) {
     const donation: Donation = await this.donationRepo.findOne({
-      where: { id: adminUpdateDonationDto.id },
+      where: { id: id },
       relations: { city: true },
     });
 
@@ -87,8 +87,26 @@ export class AdminService {
     }
 
     return await this.donationRepo.update(
-      adminUpdateDonationDto.id,
+      id,
       updatedDonation,
     );
   }
+
+  async adminDeleteEmergency(id:number){
+    const emergency = await this.emergencyRepository.findOne({where:{id:id}})
+    if(!emergency)
+    {
+      throw new UnauthorizedException("emergency not found")
+    }
+    return this.emergencyRepository.softDelete(id)
+  }
+
+ async showPreviousValuesUpdate(id : number){
+  let donation = await this.donationRepo.findOne({where:{id : id}, relations:{city:true}})
+  if(!donation)
+  {
+    throw new UnauthorizedException("donation not found")
+  }
+  return donation;
+ }
 }

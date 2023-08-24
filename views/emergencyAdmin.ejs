@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/emergencyAdmin.css" />
+    <title>Emergency Page</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <nav class="navbar">
+        <div class="navbar-container">
+          <div class="logo">Emergency</div>
+          <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">City</a></li>
+            <li><a href="#">Emergency</a></li>
+            <li><a href="#">Donation</a></li>
+          </ul>
+        </div>
+      </nav>
+    </nav>
+
+    <div class="emergency-table">
+      <h2>Emergency Requests</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Registrar Name</th>
+            <th>Contact</th>
+            <th>City</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Hospital</th>
+            <th>Blood Group</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+          <% emergencyList.forEach((item) => { %>
+            <tr>
+                <td><%= item.patient_name %></td>
+                <td><%= item.registerar_name %></td>
+                <td><%= item.contact %></td>
+                <td><%= item.city.city %></td>
+                <td><%= item.email %></td>
+                <td><%= item.age %></td>
+                <td><%= item.hospital %></td>
+                <td><%= item.blood_group %></td>
+                <td>
+                    
+                    <form action="/deleteemergency" method="get" >
+                        <input type="hidden" name="id" value= <%= item.id %>>
+                        <button type="submit" class="submit-btn"  > delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            
+        <% }) %>
+          <!-- More rows can be added similarly -->
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

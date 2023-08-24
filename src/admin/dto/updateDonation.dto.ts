@@ -6,9 +6,9 @@ import {
 import { Entity } from 'typeorm';
 
 export class AdminUpdateDonationDto {
-  @IsNumber()
+
   @IsNotEmpty()
-  id: number;
+  id: any;
 
   @IsString()
   name: string;
