@@ -9,9 +9,11 @@ import { AdminModule } from './admin/admin.module';
 import { Emergency } from './emergency/entities/emergency.entity';
 import { City } from './city/entity/city.entity';
 import { CityModule } from './city/city.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     DonationsModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
