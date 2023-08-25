@@ -60,6 +60,7 @@
             <th>Gender</th>
             <th>Blood Group</th>
             <th>DOB</th>
+            <th>Diseases</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -73,6 +74,7 @@
             <td><%= item.gender %></td>
             <td><%= item.blood_group %></td>
             <td><%= item.DOB %></td>
+            <td><%= item.disease %></td>
             <td>
               <form action="/deletedonation" method="get" >
               <input type="hidden" name="id" value= <%= item.id %>>
