@@ -57,6 +57,7 @@ export class AdminController {
   }
 
   @Post('admin/update')
+  @Render('successupdatedonation')
   async adminUpdateDonation(
     @Body() adminUpdateDonationDto: AdminUpdateDonationDto,
   ) { 
