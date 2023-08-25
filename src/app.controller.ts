@@ -15,6 +15,10 @@ export class AppController {
   renderAdminPanel(){
   }
 
-  
+  @Get('blooddonation')
+  @Render('home')
+  renderHome(){
+    
+  }
  
 }

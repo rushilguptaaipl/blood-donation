@@ -10,7 +10,6 @@ export class CreateEmergencyDto {
   patient_name: string;
 
   @IsNotEmpty()
-  @IsNumber()
   contact: number;
 
   @IsString()
@@ -22,7 +21,6 @@ export class CreateEmergencyDto {
   email: string;
 
   @IsNotEmpty()
-  @IsNumber()
   age: number;
 
   @IsString()

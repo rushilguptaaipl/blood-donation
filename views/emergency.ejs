@@ -1,60 +1,120 @@
+
+
 <!DOCTYPE html>
-<html>
-
-<head>
-  <title>Emergency Registration</title>
- <link rel="stylesheet" href="/css/emergency.css">
-</head>
-
-<body>
-    <nav>
-        <label class="logo"><img src="pic/logo.png" alt="" srcset=""></label>
-        <ul>
-            <li><a class="action" href="Home.html">HOME</a></li>
-            <li><a class="action" href="Donation.html">Donation</a></li>
-            <li><a class="action" href="Emergency.html">Emergency</a></li>
-            <li><a class="action" href="#">ABOUT</a></li>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/emergency.css" />
+    <title>Emergency Submission</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="logo">Emergency</div>
+        <ul class="nav-links">
+          <li><a href="/blooddonation">Home</a></li>
+          <li><a href="/emergency">Emergency</a></li>
+          <li><a href="/home">Donation</a></li>
         </ul>
+      </div>
     </nav>
-<div class="background">
-  <form method="post" action="/submit-emergency-form">
-    <label for="patient-name">Name of Patient:</label>
-    <input type="text" id="patient-name" name="patient_name" required>
 
-    <label for="registerer-name">Name of Registerer:</label>
-    <input type="text" id="registerer-name" name="registerar_name" required>
-
-    <label for="phone">Phone Number:</label>
-    <input type="tel" id="phone" name="contact"  required>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-
-    <label for="city">City:</label>
-    <input type="text" id="city" name="city" required>
-
-    <label for="age">Age</label>
-    <input type="number" id="dob" name="age" required><br><br>
-
-    <label for="hospital">Hospital:</label>
-    <input type="text" id="hospital" name="hospital" required>
-
-    <label for="blood-group">Blood Group:</label>
-    <select id="blood-group" name="blood_group" required>
-      <option value="" disabled selected>Select Blood Group</option>
-      <option value="A+">A+</option>
-      <option value="A-">A-</option>
-      <option value="B+">B+</option>
-      <option value="B-">B-</option>
-      <option value="AB+">AB+</option>
-      <option value="AB-">AB-</option>
-      <option value="O+">O+</option>
-      <option value="O-">O-</option>
-    </select>
-
-    <button type="submit">Submit</button>
-  </form>
-</div>
-</body>
-
+    <div class="emergency-form">
+      <h2>Submit Emergency Request</h2>
+      <form method="post" action="/submit-emergency-form">
+        <div class="form-group">
+          <label for="patient-name">Patient Name:</label>
+          <input
+            type="text"
+            id="patient-name"
+            name="patient_name"
+            placeholder="Enter patient's name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="registrar-name">Registrar Name:</label>
+          <input
+            type="text"
+            id="registrar-name"
+            name="registerar_name"
+            placeholder="Enter registrar's name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="contact">Contact:</label>
+          <input
+            type="tel"
+            id="contact"
+            name="contact"
+            placeholder="Enter contact number"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="city">City:</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            placeholder="Enter city"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            placeholder="Enter age"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Gender:</label>
+          <input type="radio" id="male" name="gender" value="Male" required />
+          <label for="male">Male</label>
+          <input type="radio" id="female" name="gender" value="Female" />
+          <label for="female">Female</label>
+        </div>
+        <div class="form-group">
+          <label for="hospital">Hospital:</label>
+          <input
+            type="text"
+            id="hospital"
+            name="hospital"
+            placeholder="Enter hospital"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="blood-group">Blood Group:</label>
+          <select id="blood-group" name="blood_group" required>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    </div>
+  </body>
 </html>

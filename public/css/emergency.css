@@ -1,104 +1,100 @@
-*{
-    padding: 0;
-    margin: 0;
-    text-decoration: none;
-    list-style: none;
-   
-  
+/* Reset some default styles */
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
 }
-body {
-  font-family: Arial, sans-serif;
+
+/* Navbar styles */
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
 }
-/* navbar styling */
-nav{
-    background-color: black;
-    height: 100px;
-    width: 100%; 
- }
- .logo img{
- 
- height: 100px;
- width: 85px;
- }
- nav ul{
-     float: right;
-     margin-right:20px ;
-     justify-content: space-between;
- }
- nav ul li{
-     display: inline-block;
-     line-height: 100px;
-     margin: 0 5px;
-     text-transform: uppercase;
-     text-shadow: 3PX 3PX 10PX white;
- 
- }
- nav ul li a {
-     color: white;
-     font-size: 16px;
- 
- }
- .action,a:hover{
-   color: bisque;
-   transition: 0s;
- 
- }
-/* navbar close */
 
-/* background image  */
- .background{
-    background: url(../images/donation.webp);
-    background-size: cover;
-    height: 650px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    place-items: center;
-   
- }
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
-/* form styling start */
-form {
-  max-width: 400px;
-  margin: auto;
+.logo {
+  font-size: 24px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin-right: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+  color: #ff5733; /* Change to your preferred hover color */
+}
+/* Emergency form styles */
+.emergency-form {
+  max-width: 800px;
+  margin: 20px auto;
   padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.emergency-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.emergency-form .form-group {
+  margin-bottom: 20px;
+}
+
+.emergency-form .form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.emergency-form input[type="text"],
+.emergency-form input[type="tel"],
+.emergency-form input[type="email"],
+.emergency-form select,
+.emergency-form input[type="number"] {
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #f2f2f2;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-select {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-select {
-  height: 40px;
-}
-
-label {
-  font-weight: bold;
-}
-
-button {
-  background-color: #4CAF50;
+.submit-btn {
+  background-color: #ff5733;
   color: white;
-  padding: 14px 20px;
-  margin-top: 10px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  width: 100%;
+  transition: background-color 0.3s ease-in-out;
 }
 
-button:hover {
-  background-color: red;
+.submit-btn:hover {
+  background-color: #d03e17; /* Darken the color on hover */
 }
-/* form styling off */
