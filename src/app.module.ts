@@ -10,7 +10,7 @@ import { Emergency } from './emergency/entities/emergency.entity';
 import { City } from './city/entity/city.entity';
 import { CityModule } from './city/city.module';
 import { ConfigModule } from '@nestjs/config';
-
+import * as fs from 'fs';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -24,6 +24,10 @@ import { ConfigModule } from '@nestjs/config';
       database: process.env.DB_DATABASE,
       entities: [Donation,Emergency,City],
       synchronize: false,
+      autoLoadEntities:true,
+      ssl: {
+        ca: fs.readFileSync(process.env.SSL_CA_CERTIFICATES),
+      },
     }),
     EmergencyModule,
     AdminModule,
