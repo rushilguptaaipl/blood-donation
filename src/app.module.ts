@@ -10,10 +10,27 @@ import { Emergency } from './emergency/entities/emergency.entity';
 import { City } from './city/entity/city.entity';
 import { CityModule } from './city/city.module';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 import * as fs from 'fs';
+import { JwtModule } from '@nestjs/jwt';
+import { User } from './user/entities/user.entity';
+import { jwtConstants } from './user/constants/constants';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    // JwtModule.registerAsync({
+    //   useFactory: () => ({
+    //     global: true,
+    //     signOptions: { expiresIn: '60s' },
+    //     secret: 'hard!to-guess_secret'
+    //   })
+    // }),
+    
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60s' },
+    }),
     DonationsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -22,22 +39,17 @@ import * as fs from 'fs';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Donation,Emergency,City],
-<<<<<<< HEAD
+      entities: [Donation,Emergency,City,User],
       // entities: ["dist/**/*.entity{.ts,.js}"],
       url : process.env.DB_URL,
       synchronize: Boolean(process.env.DB_SYNCHRONIZE),
-=======
-      synchronize: false,
       autoLoadEntities:true,
-      ssl: {
-        ca: fs.readFileSync(process.env.SSL_CA_CERTIFICATES),
-      },
->>>>>>> e35f885efbfd263ea3c6516790a29c989ecdc4cb
     }),
+    
     EmergencyModule,
     AdminModule,
-    CityModule
+    CityModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],
