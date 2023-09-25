@@ -9,14 +9,14 @@ export class CityController {
   constructor(
   private readonly cityService : CityService
   ) {}
-
+  @UseGuards(AuthGuard)
   @Post('addcity')
   @Redirect('list-city')
   adminCreateCity(@Body()createCityDto:CreateCityDto)
   {
     return this.cityService.adminCreateCity(createCityDto)
   }
-
+  @UseGuards(AuthGuard)
   @Get("list-city")
   @Render("city")
   async adminListCity()

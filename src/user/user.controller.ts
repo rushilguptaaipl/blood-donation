@@ -1,12 +1,13 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Redirect, Render, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 
-@Controller('user')
+@Controller()
 export class UserController {
     constructor(private readonly userService: UserService) { }
-    @Post('login')
+    @Post('login-submit')
+    @Redirect('adminpanel')
     async login(@Body() loginDto: LoginDto, @Res({passthrough:true}) response: Response) {
         const result = await this.userService.login(loginDto);
         await response.cookie("auth-token", {auth : result});
@@ -15,4 +16,8 @@ export class UserController {
         return console.log("true");
             
     }
+
+    @Get("login")
+    @Render("login")
+    async renderLogin(){}
 }

@@ -18,22 +18,15 @@ import { jwtConstants } from './user/constants/constants';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    // JwtModule.registerAsync({
-    //   useFactory: () => ({
-    //     global: true,
-    //     signOptions: { expiresIn: '60s' },
-    //     secret: 'hard!to-guess_secret'
-    //   })
-    // }),
     
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1d' },
     }),
     DonationsModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: 'mysql',
       port: parseInt(process.env.DB_PORT),
       host: process.env.DB_HOST,
       username: process.env.DB_USER,
