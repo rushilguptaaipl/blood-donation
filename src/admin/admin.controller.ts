@@ -50,7 +50,7 @@ export class AdminController {
     const emergencyList = await this.adminService.findAllEmergency();
     return { emergencyList };
   }
-
+  @UseGuards(AuthGuard)
   @Get('deletedonation')
   @Redirect('admindonation')
   async adminDeleteDonation(@Query() deleteDonation: deleteEmergencyDto) {

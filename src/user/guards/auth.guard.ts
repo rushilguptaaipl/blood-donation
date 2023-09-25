@@ -7,6 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '../constants/constants';
 import { parse } from 'path';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -25,31 +26,53 @@ export class AuthGuard implements CanActivate {
     if (cookies?.base) {
       var cookie = cookies.base.split('access_token%22%3A%22');
       cookie = cookie[1].split('%');
-      console.log(cookie[0]);
+      // console.log(cookie[0]);
     }
-
-    //   console.log(cookie[1]);
+   const  res =  isTokenExpired(cookie[0])
+      if(res){
+        response.redirect('login');
+      }
 
     try {
       const payload = await this.jwtService.verifyAsync(cookie[0], {
         secret: jwtConstants.secret,
       });
-      console.log(payload);
+      // console.log(payload);
 
       for (let i = 0; i < payload.length; i++) {
-        console.log(payload[i]);
+        // console.log(payload[i]);
       }
       const { sub, iat, exp, ...pay } = payload;
-      console.log(pay.role);
+      // console.log(pay.role);
 
       if (pay.role == 'superadmin') {
-        console.log("done with all");
+        // console.log("done with all");
         
         return true;
       }
     } catch {
       throw new UnauthorizedException();
     }
+    return true;
+
+
+
+  }
+
+
+
+
+}
+function isTokenExpired(token: string): boolean {
+  try {
+    const decodedToken : any = jwt.verify(token, jwtConstants.secret); 
+    const expirationTime = new Date(decodedToken.exp * 1000); 
+    console.log(expirationTime);
+    
+    // Compare the expiration time to the current time
+    return expirationTime <= new Date();
+  } catch (error) {
+    // If there's an error, the token is invalid or expired
     return true;
   }
 }
