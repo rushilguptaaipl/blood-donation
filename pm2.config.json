@@ -1,0 +1,14 @@
+{
+    "apps": [
+      {
+        "name": "blood_donation",
+        "script": "dist/main.js",
+        "instances": 2,
+        "autorestart": true,
+        "watch": true,
+        "env": {
+          "NODE_ENV": "production"
+        }
+      }
+    ]
+  }
