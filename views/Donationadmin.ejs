@@ -5,6 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/donationAdmin.css" />
     <title>Donation Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // list city
+        try {
+          const response = await axios.get(
+            'http://localhost:3000/admin/listcity',
+          );
+          const cityOption = document.getElementById('city-option');
+          response.data.map((item) => {
+            const row = `<option value= "${item.city}" >  ${item.city} </option>`;
+            cityOption.insertAdjacentHTML('beforeend', row);
+          });
+        } catch (error) {
+          const row = `<tr><td>${'NO CITY FOUND'}</td></tr>`;
+          cityList.insertAdjacentHTML('beforeend', row);
+        }
+        // list donation
+        try {
+          const response = await axios.get(
+            'http://localhost:3000/admin/listdonation',
+          );
+          const tableBody = document.getElementById('tableRowBody');
+          response.data.map((item) => {
+            const row = `<tr>
+            <td>${item.name}</td>
+            <td>${item.city.city}</td>
+            <td>${item.contact}</td>
+            <td>${item.email}</td>
+            <td>${item.gender}</td>
+            <td>${item.blood_group}</td>
+            <td>${item.DOB}</td>
+            <td>${item.disease}</td>
+            <td class="action-buttons">
+                    <button class="update" value = "${item.id}" , id = "${item.id}">Update</button>
+                    <button class="delete" value = "${item.id}" , id = "${item.id}">Delete</button>
+                </td>
+            </tr>`;
+            tableBody.insertAdjacentHTML('beforeend', row);
+          });
+        } catch (error) {
+          console.log(error);
+          const row = `<h1 style="text-align:right">${'No Donation Found'}</h1>`;
+          tableBody.insertAdjacentHTML('beforeend', row);
+        }
+
+        // delete Donation
+        const deleteButton = document.getElementsByClassName('delete');
+        for (let i = 0; i < deleteButton.length; i++) {
+          deleteButton[i].addEventListener('click', async (event) => {
+            try {
+              const id = parseInt(event.target.id);
+              const deleteDonationDto = {
+                id: id,
+              };
+              const response = await axios.post(
+                'http://localhost:3000/admin/deletedonation',
+                deleteDonationDto,
+              );
+              window.alert('Deleted');
+              location.reload();
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        }
+
+        // filter donation
+        const filterForm = document.getElementById('filterForm');
+        filterForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const formData = new FormData(filterForm);
+          const city = formData.get('city');
+          const blood_group = formData.get('blood_group');
+          const adminFindDonation = {
+            city : city,
+            blood_group : blood_group
+          }
+          try{
+            const response = await axios.post("http://localhost:3000/admin/finddonation", adminFindDonation);
+            const tableRowBody = document.getElementById("tableRowBody")
+            console.log(tableRowBody);
+            tableRowBody.innerHTML = ""
+            response.data.map((item) => {
+            const row = `<tr>
+            <td>${item.name}</td>
+            <td>${item.city.city}</td>
+            <td>${item.contact}</td>
+            <td>${item.email}</td>
+            <td>${item.gender}</td>
+            <td>${item.blood_group}</td>
+            <td>${item.DOB}</td>
+            <td>${item.disease}</td>
+            <td class="action-buttons">
+                    <button class="update" value = "${item.id}" , id = "${item.id}">Update</button>
+                    <button class="delete" value = "${item.id}" , id = "${item.id}">Delete</button>
+                </td>
+            </tr>`;
+            tableBody.insertAdjacentHTML('beforeend', row);
+          });
+          }
+          catch(error){console.log(error);}
+        });
+        // update donation
+        const updateButton = document.getElementsByClassName('update');
+        for (let i = 0; i < deleteButton.length; i++) {
+          updateButton[i].addEventListener('click', async (event) => {
+            try {
+              const id = parseInt(event.target.id);
+             
+              const url = `http://localhost:3000/admin/update?id=${id}`
+              window.location.href = url;
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        }
+      });
+    </script>
   </head>
   <body>
     <nav class="navbar">
@@ -21,27 +140,24 @@
 
     <div class="donation-form">
       <h2>Donate Blood</h2>
-      <form action="/search" method="post">
+      <form id="filterForm">
         <div class="form-group">
-          <label for="city">City:</label>
-          <select id="city" name="city">
+          <label for="city-option">City:</label>
+          <select id="city-option" name="city">
             <option value="" disabled selected>Select City</option>
-            <% cityList.forEach((item) => { %>
-              <option <%= value= item.city %>> <%= item.city %> </option>
-          <% }) %>
           </select>
         </div>
         <div class="form-group">
           <label for="blood-group">Blood Group:</label>
           <select id="blood-group" name="blood_group">
             <option value="A+">A+</option>
-      <option value="A-">A-</option>
-      <option value="B+">B+</option>
-      <option value="B-">B-</option>
-      <option value="AB+">AB+</option>
-      <option value="AB-">AB-</option>
-      <option value="O+">O+</option>
-      <option value="O-">O-</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
             <!-- Add more options as needed -->
           </select>
         </div>
@@ -50,7 +166,7 @@
     </div>
     <div class="donors-table">
       <h2>Donors List</h2>
-      <table>
+      <table id="tableBody">
         <thead>
           <tr>
             <th>Name</th>
@@ -64,30 +180,8 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
-          <% donationList.forEach((item) => { %>
-          <tr>
-            <td><%= item.name %></td>
-            <td><%= item.city.city %></td>
-            <td><%= item.contact %></td>
-            <td><%= item.email %></td>
-            <td><%= item.gender %></td>
-            <td><%= item.blood_group %></td>
-            <td><%= item.DOB %></td>
-            <td><%= item.disease %></td>
-            <td>
-              <form action="/deletedonation" method="get" >
-              <input type="hidden" name="id" value= <%= item.id %>>
-              <button type= "submit" class="delete-btn">Delete</button>
-              </form>
-              <form action="/updatedonation"  >
-              <input type="hidden" name="id" value= <%= item.id %>>
-              <button class="update-btn">Update</button>
-              </form>
-            </td>
-          </tr>
-          <% }) %>
-          <!-- More rows can be added similarly -->
+        <tbody id="tableRowBody">
+
         </tbody>
       </table>
     </div>

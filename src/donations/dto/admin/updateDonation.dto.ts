@@ -8,7 +8,7 @@ import { Entity } from 'typeorm';
 export class AdminUpdateDonationDto {
 
   @IsNotEmpty()
-  id: any;
+  id: number;
 
   @IsString()
   name: string;
@@ -28,7 +28,7 @@ export class AdminUpdateDonationDto {
   @IsString()
   blood_group: string;
 
-  gender: 'M' | 'F';
+  gender: 'Male' | 'Female';
 
   @IsString()
   email: string;

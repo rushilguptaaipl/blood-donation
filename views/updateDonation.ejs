@@ -5,6 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/updateDonation.css" />
     <title>Update Donation Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let id = urlParams.get('id');
+        id = parseInt(id);
+        const findDonationbyIdDto = {
+          id: id,
+        };
+        try {
+          const response = await axios.post(
+            'http://localhost:3000/admin/findDonationById',
+            findDonationbyIdDto,
+          );
+          const name = document.getElementById('name');
+          const city = document.getElementById('city');
+          const contact = document.getElementById('phone');
+          const disease = document.getElementById('disease');
+          const email = document.getElementById('email');
+          const maleradio = document.getElementById('maleradio');
+          const femaleradio = document.getElementById('femaleradio');
+          const blood_group = document.getElementById('blood-group');
+          const dob = document.getElementById('dob');
+
+          name.value = response.data.name;
+          city.value = response.data.city.city;
+          contact.value = response.data.contact;
+          disease.value = response.data.disease;
+          email.value = response.data.email;
+          blood_group.value = response.data.blood_group;
+          dob.value = response.data.DOB;
+          if (response.data.gender == 'MALE') {
+            maleradio.checked = true;
+          } else {
+            femaleradio.checked = true;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+
+        const updateDonationForm =
+          document.getElementById('updateDonationForm');
+        updateDonationForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const formData = new FormData(updateDonationForm);
+          const name = formData.get('name').trim().toLowerCase();
+          const city = formData.get('city').trim().toLowerCase();
+          const contact = formData.get('contact').trim();
+          const disease = formData.get('disease');
+          const email = formData.get('email').trim();
+          const blood_group = formData.get('blood_group');
+          const DOB = formData.get('DOB');
+          if(maleradio.checked == true){
+            let gender = maleradio.value;
+          }
+          else{
+             gender = femaleradio.value;
+          }
+          const adminUpdateDonationDto = {
+            id:parseInt(id),
+            name:name,
+            city:city,
+            contact:contact,
+            disease:disease,
+            email:email,
+            blood_group:blood_group,
+            DOB:DOB,
+            gender:gender
+          }
+          try{
+
+          }
+          catch(error){
+            console.log(error);
+          }
+        });
+      });
+    </script>
   </head>
   <body>
     <nav class="navbar">
@@ -20,10 +99,7 @@
     </nav>
     <div class="form-container">
       <h2>Update Donation</h2>
-      <form method="post"  action="admin/update">
-        <div class="form-group">
-        <input type="hidden"  name="id" id = "id" value= <%= donation.id %>>
-        </div>
+      <form id="updateDonationForm">
         <div class="form-group">
           <label for="name">Name:</label>
           <input
@@ -31,7 +107,6 @@
             id="name"
             name="name"
             placeholder="Enter your name"
-             value= <%= donation.name %>
             required
           />
         </div>
@@ -42,7 +117,6 @@
             id="city"
             name="city"
             placeholder="Enter your city"
-            value= <%= donation.city.city %>
             required
           />
         </div>
@@ -53,16 +127,15 @@
             id="phone"
             name="contact"
             placeholder="Enter your phone number"
-            value= <%= donation.contact %>
             required
           />
         </div>
         <div class="form-group">
           <label for="disease">Any Previous Disease:</label>
-    <select id="disease" name="disease" required >
-      <option value="yes" <% if (donation.disease === 'yes') { %>selected<% } %>>Yes</option>
-      <option value="no" <% if (donation.disease === 'no') { %>selected<% } %>>No</option>
-    </select>   
+          <select id="disease" name="disease" required>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="email">Email:</label>
@@ -71,33 +144,38 @@
             id="email"
             name="email"
             placeholder="Enter your email"
-            value= <%= donation.email %>
             required
           />
         </div>
         <div class="form-group">
           <label>Gender:</label>
-          <input type="radio" id="male" name="gender" value="Male" required <% if (donation.gender === 'Male') { %>checked<% } %>/>
+          <input
+            type="radio"
+            id="maleradio"
+            name="gender"
+            value="Male"
+            required
+          />
           <label for="male">Male</label>
-          <input type="radio" id="female" name="gender" value="Female" <% if (donation.gender === 'Female') { %>checked<% } %> />
+          <input type="radio" id="femaleradio" name="gender" value="Female" />
           <label for="female">Female</label>
         </div>
         <div class="form-group">
           <label for="blood-group">Blood Group:</label>
           <select id="blood-group" name="blood_group" required>
             <option value="A+">A+</option>
-      <option value="A-" <% if (donation.blood_group === 'A-') { %>selected<% } %>>A-</option>
-      <option value="B+" <% if (donation.blood_group === 'B+') { %>selected<% } %>>B+</option>
-      <option value="B-" <% if (donation.blood_group === 'B-') { %>selected<% } %>>B-</option>
-      <option value="AB+" <% if (donation.blood_group === 'AB+') { %>selected<% } %>>AB+</option>
-      <option value="AB-" <% if (donation.blood_group === 'AB-') { %>selected<% } %>>AB-</option>
-      <option value="O+" <% if (donation.blood_group === 'O+') { %>selected<% } %>>O+</option>
-      <option value="O-" <% if (donation.blood_group === 'O-') { %>selected<% } %>>O-</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
           </select>
         </div>
         <div class="form-group">
           <label for="dob">Date of Birth:</label>
-          <input type="date" id="dob" name="DOB" required  value="<%= donation.DOB %>"/>
+          <input type="date" id="dob" name="DOB" required />
         </div>
         <button type="submit" class="submit-btn">Update</button>
       </form>
