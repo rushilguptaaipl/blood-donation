@@ -86,7 +86,6 @@
           try{
             const response = await axios.post("http://localhost:3000/admin/finddonation", adminFindDonation);
             const tableRowBody = document.getElementById("tableRowBody")
-            console.log(tableRowBody);
             tableRowBody.innerHTML = ""
             response.data.map((item) => {
             const row = `<tr>
@@ -105,8 +104,41 @@
             </tr>`;
             tableBody.insertAdjacentHTML('beforeend', row);
           });
+          const deleteButton = document.getElementsByClassName('delete');
+        for (let i = 0; i < deleteButton.length; i++) {
+          deleteButton[i].addEventListener('click', async (event) => {
+            try {
+              const id = parseInt(event.target.id);
+              const deleteDonationDto = {
+                id: id,
+              };
+              const response = await axios.post(
+                'http://localhost:3000/admin/deletedonation',
+                deleteDonationDto,
+              );
+              window.alert('Deleted');
+              location.reload();
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        }
           }
           catch(error){console.log(error);}
+
+          const updateButton = document.getElementsByClassName('update');
+        for (let i = 0; i < deleteButton.length; i++) {
+          updateButton[i].addEventListener('click', async (event) => {
+            try {
+              const id = parseInt(event.target.id);
+             
+              const url = `http://localhost:3000/admin/update?id=${id}`
+              window.location.href = url;
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        }
         });
         // update donation
         const updateButton = document.getElementsByClassName('update');
@@ -130,10 +162,10 @@
       <div class="navbar-container">
         <div class="logo">Donation</div>
         <ul class="nav-links">
-          <li><a href="/adminpanel">Home</a></li>
-          <li><a href="/list-city">City</a></li>
-          <li><a href="/emergencyadmin">Emergency</a></li>
-          <li><a href="/admindonation">Donation</a></li>
+          <li><a href="/admin">Home</a></li>
+          <li><a href="/admin/city">City</a></li>
+          <li><a href="/admin/emergency">Emergency</a></li>
+          <li><a href="/admin/donation">Donation</a></li>
         </ul>
       </div>
     </nav>

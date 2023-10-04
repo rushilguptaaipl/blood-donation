@@ -5,11 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blood Donation Portal - Login</title>
     <link rel="stylesheet" href="/css/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded",async()=>{
+            const loginForm = document.getElementById("loginForm")
+            loginForm.addEventListener("submit",async(event)=>{
+                event.preventDefault()
+                const formData = new FormData(loginForm);
+                const email = formData.get("email").trim();
+                const password = formData.get("password");
+                const loginDto = {
+                    email  : email,
+                    password:password
+                }
+                console.log();
+                try{
+                    const response = await axios.post("http://localhost:3000/login-submit",loginDto)
+                    .then((response)=>{console.log(response);})
+                    window.location.href = "http://localhost:3000/admin"
+                }
+                catch(error){
+                    console.log(error);
+                }
+            })
+        })
+    </script>
 </head>
 <body>
     <div class="login-container">
         <h2>Welcome to the Blood Donation Portal</h2>
-        <form action="login-submit" method="post">
+        <form id="loginForm">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="email" required>

@@ -7,17 +7,10 @@ import { CreateEmergencyDto } from './dto/create-emergency.dto';
 export class EmergencyController {
   constructor(private readonly emergencyService: EmergencyService) {}
 
-  @Post("submit-emergency-form")
-  @Render('successEmergency')
-  create(@Body() createEmergencyDto: CreateEmergencyDto) {
-    return this.emergencyService.create(createEmergencyDto);
+  @Post("createEmergency")
+  createEmergency(@Body() createEmergencyDto: CreateEmergencyDto) {
+    return this.emergencyService.createEmergency(createEmergencyDto);
   }
-
-  @Get("emergency")
-  @Render('emergency')
-  getEmergency() {}
-
-
 
 
 }

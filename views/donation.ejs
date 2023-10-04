@@ -6,6 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/donation.css" />
     <title>Donation Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded",async()=>{
+        const maleradio = document.getElementById('maleradio');
+          const femaleradio = document.getElementById('femaleradio');
+        const donationForm =
+          document.getElementById('donationForm');
+          donationForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const formData = new FormData(donationForm);
+          const name = formData.get('name').trim().toLowerCase();
+          const city = formData.get('city').trim().toLowerCase();
+          const contact = formData.get('contact').trim();
+          const disease = formData.get('disease');
+          const email = formData.get('email').trim();
+          const blood_group = formData.get('blood_group');
+          const DOB = formData.get('DOB');
+          if (maleradio.checked == true) {
+            var gender = maleradio.value;
+          } else {
+            gender = femaleradio.value;
+          }
+          const createDonationDto = {
+            name: name,
+            city: city,
+            contact: contact,
+            disease: disease,
+            email: email,
+            blood_group: blood_group,
+            DOB: DOB,
+            gender: gender,
+          };
+          try {
+            const response = await axios.post(
+              'http://localhost:3000/createDonation',
+              createDonationDto,
+            );
+            window.alert('Successfull');
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      })
+    </script>
   </head>
   <body>
     <nav class="navbar">
@@ -21,7 +65,7 @@
 
     <div class="donation-form">
       <h2>Register for Donation</h2>
-      <form method="post" action="/registeration">
+      <form id="donationForm">
         <div class="form-group">
           <label for="name">Name:</label>
           <input
@@ -72,9 +116,9 @@
         </div>
         <div class="form-group">
           <label>Gender:</label>
-          <input type="radio" id="male" name="gender" value="Male" required />
+          <input type="radio" id="maleradio" name="gender" value="Male" required />
           <label for="male">Male</label>
-          <input type="radio" id="female" name="gender" value="Female" />
+          <input type="radio" id="femaleradio" name="gender" value="Female" />
           <label for="female">Female</label>
         </div>
         <div class="form-group">

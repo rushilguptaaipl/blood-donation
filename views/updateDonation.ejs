@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
+        // findind id 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         let id = urlParams.get('id');
@@ -15,6 +16,7 @@
         const findDonationbyIdDto = {
           id: id,
         };
+        // finding donation by id
         try {
           const response = await axios.post(
             'http://localhost:3000/admin/findDonationById',
@@ -37,7 +39,7 @@
           email.value = response.data.email;
           blood_group.value = response.data.blood_group;
           dob.value = response.data.DOB;
-          if (response.data.gender == 'MALE') {
+          if (response.data.gender == 'Male') {
             maleradio.checked = true;
           } else {
             femaleradio.checked = true;
@@ -45,7 +47,7 @@
         } catch (error) {
           console.log(error);
         }
-
+        // update donation
         const updateDonationForm =
           document.getElementById('updateDonationForm');
         updateDonationForm.addEventListener('submit', async (event) => {
@@ -58,27 +60,31 @@
           const email = formData.get('email').trim();
           const blood_group = formData.get('blood_group');
           const DOB = formData.get('DOB');
-          if(maleradio.checked == true){
-            let gender = maleradio.value;
-          }
-          else{
-             gender = femaleradio.value;
+          if (maleradio.checked == true) {
+            var gender = maleradio.value;
+          } else {
+            gender = femaleradio.value;
           }
           const adminUpdateDonationDto = {
-            id:parseInt(id),
-            name:name,
-            city:city,
-            contact:contact,
-            disease:disease,
-            email:email,
-            blood_group:blood_group,
-            DOB:DOB,
-            gender:gender
-          }
-          try{
-
-          }
-          catch(error){
+            id: parseInt(id),
+            name: name,
+            city: city,
+            contact: contact,
+            disease: disease,
+            email: email,
+            blood_group: blood_group,
+            DOB: DOB,
+            gender: gender,
+          };
+          console.log(adminUpdateDonationDto);
+          try {
+            const response = await axios.post(
+              'http://localhost:3000/admin/updatedonation',
+              adminUpdateDonationDto,
+            );
+            window.alert('Updated');
+            window.location.href = 'http://localhost:3000/admin/donation';
+          } catch (error) {
             console.log(error);
           }
         });

@@ -17,9 +17,9 @@ export class EmergencyService {
     private readonly cityRepository: Repository<City>,
     private mailService: MailService,
   ) {}
-  async create(createEmergencyDto: CreateEmergencyDto) {
+  async createEmergency(createEmergencyDto: CreateEmergencyDto):Promise<any> {
     const { city, ...emergencyDetails } = createEmergencyDto;
-    let emergency = await this.emergencyRepo.save(emergencyDetails);
+    let emergency:Emergency = await this.emergencyRepo.save(emergencyDetails);
 
     var cityExists = await this.cityRepository.findOne({
       where: { city: city },

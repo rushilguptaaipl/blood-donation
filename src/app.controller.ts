@@ -15,22 +15,39 @@ export class AppController {
   @Render('home')
   renderHome(){}
 
+  @Get('donation')
+  @Render("donation")
+  renderDonation(){}
+
+  @Get('emergency')
+  @Render('emergency')
+  renderEmergency(){}
+
+  @Get('login')
+  @Render('login')
+  renderLogin(){}
+  
+  @UseGuards(AuthGuard)
   @Get('admin')
   @Render('adminPanelHome')
   renderAdminPanel(){}
 
+  @UseGuards(AuthGuard)
   @Get("admin/city")
   @Render("city")
   renderAdminCity(){}
 
+  @UseGuards(AuthGuard)
   @Get('admin/emergency')
   @Render("emergencyAdmin")
   renderAdminEmergency(){}
 
+  @UseGuards(AuthGuard)
   @Get('admin/donation')
   @Render("Donationadmin")
   renderAdminDonation(){}
 
+  @UseGuards(AuthGuard)
   @Get('admin/update')
   @Render("updateDonation")
   renderAdminUpdateDonation(){}
