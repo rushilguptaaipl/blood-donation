@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Donation } from '../../donations/entities/donation.entity';
+import { Donation } from '../../../donations/entities/donation.entity';
 
 export class CreateCityDto {
 

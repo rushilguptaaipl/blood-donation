@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class deleteEmergencyDto {
+export class DeleteDonationDto {
     @IsNotEmpty()
-    @IsString()
-    id:string;
+    id:number;
 }

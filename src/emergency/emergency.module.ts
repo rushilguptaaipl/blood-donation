@@ -6,10 +6,12 @@ import { Emergency } from './entities/emergency.entity';
 import { TransactionalEmailsApi } from '@sendinblue/client';
 import { City } from 'src/city/entity/city.entity';
 import { MailService } from './mail.service';
+import { AdminEmergencyController } from './admin/admin.controller';
+import { AdminEmergencyService } from './admin/admin.service';
 
 @Module({
   imports:[TypeOrmModule.forFeature([Emergency,City])],
-  controllers: [EmergencyController],
-  providers: [EmergencyService,TransactionalEmailsApi,MailService]
+  controllers: [EmergencyController,AdminEmergencyController],
+  providers: [EmergencyService,TransactionalEmailsApi,MailService,AdminEmergencyService]
 })
 export class EmergencyModule {}

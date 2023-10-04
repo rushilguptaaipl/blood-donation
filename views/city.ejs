@@ -4,12 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/city.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Add city
+      document.addEventListener('DOMContentLoaded', async () => {
+        const cityForm = document.getElementById('cityForm');
+        cityForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const formData = new FormData(cityForm);
+          const city = formData.get('city').trim().toLowerCase();
+          const CreateCityInput = {
+            city: city,
+          };
+          try {
+            const response = await axios.post(
+              'http://localhost:3000/admin/addcity',
+              CreateCityInput,
+            );
+            window.alert('City Created Successfully');
+            location.reload();
+          } catch (error) {
+            window.alert(error.response.data.message);
+          }
+        });
+        
+        // list City
+        try {
+          const response = await axios.get(
+            'http://localhost:3000/admin/listcity',
+          );
+          const cityList = document.getElementById('city-list');
+          response.data.map((item) => {
+            const row = `<tr><td>${item.city}</td></tr>`;
+            cityList.insertAdjacentHTML('beforeend', row);
+          });
+        } catch (error) {
+          const row = `<tr><td>${"NO CITY FOUND"}</td></tr>`;
+          cityList.insertAdjacentHTML('beforeend', row);
+        }
+      });
+    </script>
     <title>City Page</title>
   </head>
   <body>
     <nav class="navbar">
       <div class="navbar-container">
-        <div class="logo">City </div>
+        <div class="logo">City</div>
         <ul class="nav-links">
           <li><a href="/adminpanel">Home</a></li>
           <li><a href="/list-city">City</a></li>
@@ -21,7 +61,7 @@
 
     <div class="city-form">
       <h2>Enter City</h2>
-      <form action="/addcity" method="post">
+      <form id="cityForm">
         <div class="form-group">
           <label for="city">City:</label>
           <input
@@ -38,16 +78,12 @@
 
     <div class="city-table">
       <h2>City List</h2>
-      <table>
+      <table id="city-list">
         <thead>
-          <% citylist.forEach((item) => { %>
-            <tr>
-              <th> <%= item.city %></th>
-            </tr>
-            
-        <% }) %>
+          <tr>
+            <td><b>City Name</b></td>
+          </tr>
         </thead>
-       
       </table>
     </div>
   </body>

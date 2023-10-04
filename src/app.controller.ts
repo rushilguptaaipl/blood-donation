@@ -10,16 +10,28 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-  @UseGuards(AuthGuard)
-  @Get('adminpanel')
-  @Render('adminhome')
-  renderAdminPanel(){
-  }
 
-  @Get('blooddonation')
+  @Get('home')
   @Render('home')
-  renderHome(){
-    
-  }
- 
+  renderHome(){}
+
+  @Get('admin')
+  @Render('adminPanelHome')
+  renderAdminPanel(){}
+
+  @Get("admin/city")
+  @Render("city")
+  renderAdminCity(){}
+
+  @Get('admin/emergency')
+  @Render("emergencyAdmin")
+  renderAdminEmergency(){}
+
+  @Get('admin/donation')
+  @Render("Donationadmin")
+  renderAdminDonation(){}
+
+  @Get('admin/update')
+  @Render("updateDonation")
+  renderAdminUpdateDonation(){}
 }
