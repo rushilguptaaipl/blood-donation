@@ -20,7 +20,7 @@ export class UserService {
         }
         const isMatch = await bcrypt.compare(loginDto.password, user.password);
         if(!isMatch){
-            throw new UnauthorizedException("User Not Found");
+            throw new UnauthorizedException("Incorrect Password ");
         }
         const payload = { sub: user.email, role: user.role };
         return {

@@ -28,7 +28,7 @@
             <td>${item.blood_group}</td>
             <td>${item.status}</td>
             <td class="action-buttons">
-                    <button class="watched" value = "${item.id}" id = "${item.id}">Watched</button>
+                    <button class="watched" value = "${item.id}" id = "${item.id}">Status</button>
                     <button class="delete" value = "${item.id}" , id = "${item.id}">Delete</button>
                 </td>
             </tr>`;
@@ -53,7 +53,7 @@
                 url+'/admin/changestatus',
                 changeStatusDto,
               );
-              window.alert('updated');
+              window.alert('status updated successfully');
               location.reload();
             } catch (error) {
               console.log(error);

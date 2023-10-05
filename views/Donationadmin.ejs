@@ -103,7 +103,7 @@
                     <button class="delete" value = "${item.id}" , id = "${item.id}">Delete</button>
                 </td>
             </tr>`;
-              tableBody.insertAdjacentHTML('beforeend', row);
+            tableRowBody.insertAdjacentHTML('beforeend', row);
             });
             const deleteButton = document.getElementsByClassName('delete');
             for (let i = 0; i < deleteButton.length; i++) {
