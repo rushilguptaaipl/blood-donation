@@ -3,7 +3,7 @@ import { CreateDonationDto } from './dto/create-donation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Donation } from './entities/donation.entity';
 import { Repository } from 'typeorm';
-import { City } from 'src/city/entity/city.entity';
+import { City } from 'src/city/entities/city.entity';
 
 @Injectable()
 export class DonationsService {

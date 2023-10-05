@@ -5,7 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { DeleteDonationDto } from "../dto/admin/deleteDonation.dto";
 import { AdminUpdateDonationDto } from "../dto/admin/updateDonation.dto";
-import { City } from "src/city/entity/city.entity";
+import { City } from "src/city/entities/city.entity";
 import { FindDonationbyIdDto } from "../dto/admin/findDonationById.dto";
 
 @Injectable()

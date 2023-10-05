@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,11 @@ export class UserService {
 
     async login(loginDto: LoginDto):Promise<any>  {
         const user = await this.userRepository.findOne({ where: { email: loginDto.email } });
-        if (user?.password !== loginDto.password) {
+        if(!user){
+            throw new UnauthorizedException("User Not Found");
+        }
+        const isMatch = await bcrypt.compare(loginDto.password, user.password);
+        if(!isMatch){
             throw new UnauthorizedException("User Not Found");
         }
         const payload = { sub: user.email, role: user.role };

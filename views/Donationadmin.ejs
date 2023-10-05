@@ -8,11 +8,11 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
+        localStorage.setItem('url', 'http://localhost:3000');
+        var url = localStorage.getItem('url');
         // list city
         try {
-          const response = await axios.get(
-            'http://localhost:3000/admin/listcity',
-          );
+          const response = await axios.get(url + '/admin/listcity');
           const cityOption = document.getElementById('city-option');
           response.data.map((item) => {
             const row = `<option value= "${item.city}" >  ${item.city} </option>`;
@@ -24,9 +24,7 @@
         }
         // list donation
         try {
-          const response = await axios.get(
-            'http://localhost:3000/admin/listdonation',
-          );
+          const response = await axios.get(url + '/admin/listdonation');
           const tableBody = document.getElementById('tableRowBody');
           response.data.map((item) => {
             const row = `<tr>
@@ -61,7 +59,7 @@
                 id: id,
               };
               const response = await axios.post(
-                'http://localhost:3000/admin/deletedonation',
+                url + '/admin/deletedonation',
                 deleteDonationDto,
               );
               window.alert('Deleted');
@@ -80,15 +78,18 @@
           const city = formData.get('city');
           const blood_group = formData.get('blood_group');
           const adminFindDonation = {
-            city : city,
-            blood_group : blood_group
-          }
-          try{
-            const response = await axios.post("http://localhost:3000/admin/finddonation", adminFindDonation);
-            const tableRowBody = document.getElementById("tableRowBody")
-            tableRowBody.innerHTML = ""
+            city: city,
+            blood_group: blood_group,
+          };
+          try {
+            const response = await axios.post(
+              url + '/admin/finddonation',
+              adminFindDonation,
+            );
+            const tableRowBody = document.getElementById('tableRowBody');
+            tableRowBody.innerHTML = '';
             response.data.map((item) => {
-            const row = `<tr>
+              const row = `<tr>
             <td>${item.name}</td>
             <td>${item.city.city}</td>
             <td>${item.contact}</td>
@@ -102,43 +103,43 @@
                     <button class="delete" value = "${item.id}" , id = "${item.id}">Delete</button>
                 </td>
             </tr>`;
-            tableBody.insertAdjacentHTML('beforeend', row);
-          });
-          const deleteButton = document.getElementsByClassName('delete');
-        for (let i = 0; i < deleteButton.length; i++) {
-          deleteButton[i].addEventListener('click', async (event) => {
-            try {
-              const id = parseInt(event.target.id);
-              const deleteDonationDto = {
-                id: id,
-              };
-              const response = await axios.post(
-                'http://localhost:3000/admin/deletedonation',
-                deleteDonationDto,
-              );
-              window.alert('Deleted');
-              location.reload();
-            } catch (error) {
-              console.log(error);
+              tableBody.insertAdjacentHTML('beforeend', row);
+            });
+            const deleteButton = document.getElementsByClassName('delete');
+            for (let i = 0; i < deleteButton.length; i++) {
+              deleteButton[i].addEventListener('click', async (event) => {
+                try {
+                  const id = parseInt(event.target.id);
+                  const deleteDonationDto = {
+                    id: id,
+                  };
+                  const response = await axios.post(
+                    url + '/admin/deletedonation',
+                    deleteDonationDto,
+                  );
+                  window.alert('Deleted');
+                  location.reload();
+                } catch (error) {
+                  console.log(error);
+                }
+              });
             }
-          });
-        }
+          } catch (error) {
+            console.log(error);
           }
-          catch(error){console.log(error);}
 
           const updateButton = document.getElementsByClassName('update');
-        for (let i = 0; i < deleteButton.length; i++) {
-          updateButton[i].addEventListener('click', async (event) => {
-            try {
-              const id = parseInt(event.target.id);
-             
-              const url = `http://localhost:3000/admin/update?id=${id}`
-              window.location.href = url;
-            } catch (error) {
-              console.log(error);
-            }
-          });
-        }
+          for (let i = 0; i < deleteButton.length; i++) {
+            updateButton[i].addEventListener('click', async (event) => {
+              try {
+                const id = parseInt(event.target.id);
+
+                window.location.href = url + `/admin/update?id=${id}`;
+              } catch (error) {
+                console.log(error);
+              }
+            });
+          }
         });
         // update donation
         const updateButton = document.getElementsByClassName('update');
@@ -146,9 +147,8 @@
           updateButton[i].addEventListener('click', async (event) => {
             try {
               const id = parseInt(event.target.id);
-             
-              const url = `http://localhost:3000/admin/update?id=${id}`
-              window.location.href = url;
+
+              window.location.href = url + `/admin/update?id=${id}`;
             } catch (error) {
               console.log(error);
             }
@@ -212,9 +212,7 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="tableRowBody">
-
-        </tbody>
+        <tbody id="tableRowBody"></tbody>
       </table>
     </div>
   </body>

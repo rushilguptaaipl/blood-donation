@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,16 +7,23 @@
     <title>Emergency Submission</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded",async()=>{
+      document.addEventListener('DOMContentLoaded', async () => {
+        localStorage.setItem('url', 'http://localhost:3000');
+        var url = localStorage.getItem('url');
         const maleradio = document.getElementById('maleradio');
-          const femaleradio = document.getElementById('femaleradio');
-        const emergencyForm =
-          document.getElementById('emergencyForm');
-          emergencyForm.addEventListener('submit', async (event) => {
+        const femaleradio = document.getElementById('femaleradio');
+        const emergencyForm = document.getElementById('emergencyForm');
+        emergencyForm.addEventListener('submit', async (event) => {
           event.preventDefault();
           const formData = new FormData(emergencyForm);
-          const registerar_name = formData.get('registerar_name').trim().toLowerCase();
-          const patient_name = formData.get('patient_name').trim().toLowerCase()
+          const registerar_name = formData
+            .get('registerar_name')
+            .trim()
+            .toLowerCase();
+          const patient_name = formData
+            .get('patient_name')
+            .trim()
+            .toLowerCase();
           const city = formData.get('city').trim().toLowerCase();
           const contact = formData.get('contact').trim();
           const age = formData.get('age').trim();
@@ -32,26 +37,27 @@
           }
           const createEmergencyDto = {
             patient_name: patient_name,
-            registerar_name:registerar_name,
+            registerar_name: registerar_name,
             city: city,
             contact: contact,
             email: email,
             blood_group: blood_group,
             age: age,
             gender: gender,
-            hospital:hospital
+            hospital: hospital,
           };
           try {
             const response = await axios.post(
-              'http://localhost:3000/createEmergency',
+              url+'/createEmergency',
               createEmergencyDto,
             );
             window.alert('Successfull');
+            location.reload()
           } catch (error) {
             console.log(error);
           }
         });
-      })
+      });
     </script>
   </head>
   <body>
@@ -59,9 +65,9 @@
       <div class="navbar-container">
         <div class="logo">Emergency</div>
         <ul class="nav-links">
-          <li><a href="/blooddonation">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="/emergency">Emergency</a></li>
-          <li><a href="/home">Donation</a></li>
+          <li><a href="/donation">Donation</a></li>
         </ul>
       </div>
     </nav>
@@ -131,7 +137,13 @@
         </div>
         <div class="form-group">
           <label>Gender:</label>
-          <input type="radio" id="maleradio" name="gender" value="Male" required />
+          <input
+            type="radio"
+            id="maleradio"
+            name="gender"
+            value="Male"
+            required
+          />
           <label for="male">Male</label>
           <input type="radio" id="femaleradio" name="gender" value="Female" />
           <label for="female">Female</label>

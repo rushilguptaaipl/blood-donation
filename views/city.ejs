@@ -8,6 +8,8 @@
     <script>
       // Add city
       document.addEventListener('DOMContentLoaded', async () => {
+        localStorage.setItem('url', 'http://localhost:3000');
+        var url = localStorage.getItem('url');
         const cityForm = document.getElementById('cityForm');
         cityForm.addEventListener('submit', async (event) => {
           event.preventDefault();
@@ -18,7 +20,7 @@
           };
           try {
             const response = await axios.post(
-              'http://localhost:3000/admin/addcity',
+              url+'/admin/addcity',
               CreateCityInput,
             );
             window.alert('City Created Successfully');
@@ -27,11 +29,11 @@
             window.alert(error.response.data.message);
           }
         });
-        
+
         // list City
         try {
           const response = await axios.get(
-            'http://localhost:3000/admin/listcity',
+            url+'/admin/listcity',
           );
           const cityList = document.getElementById('city-list');
           response.data.map((item) => {
@@ -39,7 +41,7 @@
             cityList.insertAdjacentHTML('beforeend', row);
           });
         } catch (error) {
-          const row = `<tr><td>${"NO CITY FOUND"}</td></tr>`;
+          const row = `<tr><td>${'NO CITY FOUND'}</td></tr>`;
           cityList.insertAdjacentHTML('beforeend', row);
         }
       });

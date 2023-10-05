@@ -1,4 +1,4 @@
-import { City } from 'src/city/entity/city.entity';
+import { City } from 'src/city/entities/city.entity';
 import {
   Column,
   CreateDateColumn,
@@ -39,6 +39,9 @@ export class Emergency {
 
   @Column()
   gender: string;
+
+  @Column({nullable:true})
+  status : boolean;
 
   @DeleteDateColumn()
   deletedAt?: Date;

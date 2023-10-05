@@ -8,7 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
-        // findind id 
+        localStorage.setItem('url', 'http://localhost:3000');
+        var url = localStorage.getItem('url');
+        // findind id
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         let id = urlParams.get('id');
@@ -19,7 +21,7 @@
         // finding donation by id
         try {
           const response = await axios.post(
-            'http://localhost:3000/admin/findDonationById',
+            url + '/admin/findDonationById',
             findDonationbyIdDto,
           );
           const name = document.getElementById('name');
@@ -79,11 +81,11 @@
           console.log(adminUpdateDonationDto);
           try {
             const response = await axios.post(
-              'http://localhost:3000/admin/updatedonation',
+              url+'/admin/updatedonation',
               adminUpdateDonationDto,
             );
             window.alert('Updated');
-            window.location.href = 'http://localhost:3000/admin/donation';
+            window.location.href = url+'/admin/donation';
           } catch (error) {
             console.log(error);
           }

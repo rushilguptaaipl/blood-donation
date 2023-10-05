@@ -5,6 +5,7 @@ import { CreateCityDto } from "../dto/admin/createCity.dto";
 import { DeleteCityDto } from "../dto/admin/deleteCity.dto";
 
 @Controller("admin")
+@UseGuards(AuthGuard)
 export class AdminCityController {
   constructor(private readonly AdminCityService: AdminCityService) { }
   @Post('addcity')

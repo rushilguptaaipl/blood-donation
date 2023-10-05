@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { City } from '../../city/entity/city.entity';
+import { City } from '../../city/entities/city.entity';
 
 @Entity()
 export class Donation extends BaseEntity {

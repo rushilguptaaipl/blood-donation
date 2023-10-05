@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donation } from './donations/entities/donation.entity';
 import { EmergencyModule } from './emergency/emergency.module';
 import { Emergency } from './emergency/entities/emergency.entity';
-import { City } from './city/entity/city.entity';
+import { City } from './city/entities/city.entity';
 import { CityModule } from './city/city.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
@@ -25,7 +25,7 @@ import { jwtConstants } from './user/constants/constants';
     }),
     DonationsModule,
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       port: parseInt(process.env.DB_PORT),
       host: process.env.DB_HOST,
       username: process.env.DB_USER,

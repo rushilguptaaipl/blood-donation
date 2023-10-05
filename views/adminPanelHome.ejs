@@ -7,16 +7,19 @@
     <title>Admin Home</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded",async()=>{
-        const logout = document.getElementById("logout")
-        logout.addEventListener("click",async()=>{
-          try{
-            const response = await axios.get("http://localhost:3000/logout")
-            window.location.href = "http://localhost:3000/login"
+      document.addEventListener('DOMContentLoaded', async () => {
+        localStorage.setItem('url', 'http://localhost:3000');
+        var url = localStorage.getItem('url');
+        const logout = document.getElementById('logout');
+        logout.addEventListener('click', async () => {
+          try {
+            const response = await axios.get(url+'/logout');
+            window.location.href = url+'/login';
+          } catch (error) {
+            console.log(error);
           }
-          catch(error){console.log(error);}
-        })
-      })
+        });
+      });
     </script>
   </head>
   <body>

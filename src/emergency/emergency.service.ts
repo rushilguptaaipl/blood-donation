@@ -5,7 +5,7 @@ import { Emergency } from './entities/emergency.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { TransactionalEmailsApi } from '@sendinblue/client';
-import { City } from 'src/city/entity/city.entity';
+import { City } from 'src/city/entities/city.entity';
 import { MailService } from './mail.service';
 
 @Injectable()
@@ -29,6 +29,7 @@ export class EmergencyService {
     }
 
     emergency.city = cityExists;
+    emergency.status = false
     
     await this.emergencyRepo.save(emergency);
    return  await this.mailService.sendUserConfirmation(createEmergencyDto);

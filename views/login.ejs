@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded",async()=>{
+            localStorage.setItem('url' , 'http://localhost:3000')
+            var url = localStorage.getItem("url")
             const loginForm = document.getElementById("loginForm")
             loginForm.addEventListener("submit",async(event)=>{
                 event.preventDefault()
@@ -20,12 +22,15 @@
                 }
                 console.log();
                 try{
-                    const response = await axios.post("http://localhost:3000/login-submit",loginDto)
-                    .then((response)=>{console.log(response);})
-                    window.location.href = "http://localhost:3000/admin"
+                    const response = await axios.post(url+"/login-submit",loginDto)
+                    .then((response)=>{
+                        console.log(response);
+                    })              
+                    window.location.href = url+"/admin"
                 }
-                catch(error){
-                    console.log(error);
+                catch(error){ 
+                    const errorMesssage = document.getElementById("errorMesssage");
+                    errorMesssage.innerHTML = error.response.data.message
                 }
             })
         })
@@ -34,6 +39,7 @@
 <body>
     <div class="login-container">
         <h2>Welcome to the Blood Donation Portal</h2>
+        <h3 id="errorMesssage">Admin , Please fill Details</h3>
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">Username:</label>

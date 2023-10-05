@@ -7,12 +7,16 @@
     <title>Emergency Page</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded",async()=>{
+      document.addEventListener('DOMContentLoaded', async () => {
+        localStorage.setItem('url', 'http://localhost:3000');
+        var url = localStorage.getItem('url');
         // list emergency
-        try{
-          const response = await axios.get("http://localhost:3000/admin/listemergency")
-          const tableBody = document.getElementById("tableBody")
-          response.data.map((item)=>{
+        try {
+          const response = await axios.get(
+            url+'/admin/listemergency',
+          );
+          const tableBody = document.getElementById('tableBody');
+          response.data.map((item) => {
             const row = `<tr>
             <td>${item.patient_name}</td>
             <td>${item.registerar_name}</td>
@@ -22,36 +26,61 @@
             <td>${item.age}</td>
             <td>${item.hospital}</td>
             <td>${item.blood_group}</td>
+            <td>${item.status}</td>
             <td class="action-buttons">
-                    <button class="watched">Watched</button>
+                    <button class="watched" value = "${item.id}" id = "${item.id}">Watched</button>
                     <button class="delete" value = "${item.id}" , id = "${item.id}">Delete</button>
                 </td>
-            </tr>`
+            </tr>`;
             tableBody.insertAdjacentHTML('beforeend', row);
-          })
-        }
-        catch(error){
+          });
+        } catch (error) {
           console.log(error);
-          const row = `<h1 style="text-align:right">${"No Emergency Found"}</h1>`;
+          const row = `<h1 style="text-align:right">${'No Emergency Found'}</h1>`;
           tableBody.insertAdjacentHTML('beforeend', row);
         }
         // delete emergency
-        const deleteButton = document.getElementsByClassName("delete");
-        for(let i=0;i<deleteButton.length;i++){
-          deleteButton[i].addEventListener('click' , async(event)=>{
-            try{
-              const id = parseInt(event.target.id)
-              const deleteEmergencyDto = {
-                id : id
-              }
-              const response = await axios.post("http://localhost:3000/admin/deleteemergency",deleteEmergencyDto)
-              window.alert("Deleted")
+        const statusButton = document.getElementsByClassName('watched');
+        for (let i = 0; i < statusButton.length; i++) {
+          statusButton[i].addEventListener('click', async (event) => {
+            try {
+              const id = parseInt(event.target.id);
+              console.log(id);
+              const changeStatusDto = {
+                id: id,
+              };
+              const response = await axios.post(
+                url+'/admin/changestatus',
+                changeStatusDto,
+              );
+              window.alert('updated');
               location.reload();
+            } catch (error) {
+              console.log(error);
             }
-            catch(error){console.log(error);}
-          })
+          });
         }
-      })
+        // change status
+        const deleteButton = document.getElementsByClassName('delete');
+        for (let i = 0; i < deleteButton.length; i++) {
+          deleteButton[i].addEventListener('click', async (event) => {
+            try {
+              const id = parseInt(event.target.id);
+              const deleteEmergencyDto = {
+                id: id,
+              };
+              const response = await axios.post(
+                url+'/admin/deleteemergency',
+                deleteEmergencyDto,
+              );
+              window.alert('Deleted');
+              location.reload();
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        }
+      });
     </script>
   </head>
   <body>
@@ -82,9 +111,10 @@
             <th>Age</th>
             <th>Hospital</th>
             <th>Blood Group</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
-        </thead>       
+        </thead>
       </table>
     </div>
   </body>

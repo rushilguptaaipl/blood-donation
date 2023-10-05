@@ -1,11 +1,13 @@
-import { Body, Controller, Get, Post, Query, Render } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Render, UseGuards } from "@nestjs/common";
 import { AdminDonationService } from "./admin.service";
 import { AdminFindDonationDto } from "../dto/admin/findDonation.dto";
 import { DeleteDonationDto } from "../dto/admin/deleteDonation.dto";
 import { AdminUpdateDonationDto } from '../dto/admin/updateDonation.dto';
 import { FindDonationbyIdDto } from "../dto/admin/findDonationById.dto";
+import { AuthGuard } from "src/user/guards/auth.guard";
 
 @Controller("admin")
+@UseGuards(AuthGuard)
 export class AdminDonationContoller {
     constructor(private readonly adminDonationService: AdminDonationService) { }
 

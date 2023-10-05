@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { City } from './entity/city.entity';
+import { City } from './entities/city.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCityDto } from './dto/admin/createCity.dto';

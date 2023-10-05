@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { CityController } from './city.controller';
 import { CityService } from './city.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { City } from './entity/city.entity';
+import { City } from './entities/city.entity';
 import { AdminCityController } from './admin/admin.controller';
 import { AdminCityService } from './admin/admin.service';
 

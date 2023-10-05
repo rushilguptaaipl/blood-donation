@@ -4,7 +4,7 @@ import { EmergencyController } from './emergency.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Emergency } from './entities/emergency.entity';
 import { TransactionalEmailsApi } from '@sendinblue/client';
-import { City } from 'src/city/entity/city.entity';
+import { City } from 'src/city/entities/city.entity';
 import { MailService } from './mail.service';
 import { AdminEmergencyController } from './admin/admin.controller';
 import { AdminEmergencyService } from './admin/admin.service';

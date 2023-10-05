@@ -10,9 +10,11 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+   url :string
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    this.url = "http://localhost:3000"
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
     const result = request.headers.cookie;
@@ -25,11 +27,11 @@ export class AuthGuard implements CanActivate {
       var res = isTokenExpired(jss.access_token);
     }
     else{
-      response.redirect('http://localhost:3000/login'); 
+      response.redirect(this.url + '/login'); 
     }
     
     if (res) {
-      response.redirect('http://localhost:3000/login');
+      response.redirect(this.url+'/login');
     }
     try {
       const payload = await this.jwtService.verifyAsync(jss.access_token, {
