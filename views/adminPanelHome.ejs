@@ -8,8 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
+        // url
         localStorage.setItem('url', 'http://localhost:3000');
         var url = localStorage.getItem('url');
+        // logout
         const logout = document.getElementById('logout');
         logout.addEventListener('click', async () => {
           try {

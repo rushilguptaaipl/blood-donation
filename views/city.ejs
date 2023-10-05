@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="/css/city.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      // Add city
+  
       document.addEventListener('DOMContentLoaded', async () => {
+        // url
         localStorage.setItem('url', 'http://localhost:3000');
         var url = localStorage.getItem('url');
+        // add city
         const cityForm = document.getElementById('cityForm');
         cityForm.addEventListener('submit', async (event) => {
           event.preventDefault();
