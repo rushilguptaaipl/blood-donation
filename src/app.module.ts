@@ -5,7 +5,6 @@ import { DonationsModule } from './donations/donations.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donation } from './donations/entities/donation.entity';
 import { EmergencyModule } from './emergency/emergency.module';
-import { AdminModule } from './admin/admin.module';
 import { Emergency } from './emergency/entities/emergency.entity';
 import { City } from './city/entity/city.entity';
 import { CityModule } from './city/city.module';
@@ -40,7 +39,6 @@ import { jwtConstants } from './user/constants/constants';
     }),
     
     EmergencyModule,
-    AdminModule,
     CityModule,
     UserModule
   ],
