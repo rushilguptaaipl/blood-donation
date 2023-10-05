@@ -4,7 +4,7 @@ import { config } from 'dotenv';
  config();
 const configService = new ConfigService();
 module.exports = {
-  type: 'postgres',
+  type: 'mysql',
   port: parseInt(process.env.DB_PORT),
   host: process.env.DB_HOST,
   username: process.env.DB_USER,

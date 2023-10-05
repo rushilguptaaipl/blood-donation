@@ -25,7 +25,7 @@ import { jwtConstants } from './user/constants/constants';
     }),
     DonationsModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: 'mysql',
       port: parseInt(process.env.DB_PORT),
       host: process.env.DB_HOST,
       username: process.env.DB_USER,

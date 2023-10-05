@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    this.url = "http://localhost:3000"
+    this.url = "http://3.27.149.171"
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
     const result = request.headers.cookie;
