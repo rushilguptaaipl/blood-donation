@@ -11,6 +11,7 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views')); 
   app.setViewEngine('ejs');
   app.use(cookieParser());
+  app.enableCors();
   await app.listen((process.env.PORT||3000),()=>{
     console.log("server started on port " + process.env.PORT);
     

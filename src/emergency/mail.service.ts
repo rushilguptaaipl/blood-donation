@@ -6,7 +6,7 @@ import { TransactionalEmailsApi } from '@sendinblue/client';
 export class MailService {
   constructor(private transactionalEmailsApi: TransactionalEmailsApi) {}
 
-  async sendUserConfirmation(createEmergencyDto) {
+  async sendAdminConfirmation(createEmergencyDto) {
     const configService = new ConfigService();
 
     await this.transactionalEmailsApi.setApiKey(

@@ -21,7 +21,7 @@ import { jwtConstants } from './user/constants/constants';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '600s' },
+      signOptions: { expiresIn: '60000s' },
     }),
     DonationsModule,
     TypeOrmModule.forRoot({

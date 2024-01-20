@@ -7,13 +7,15 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Gender } from '../enums/gender.enum';
+import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
 
 @Entity()
 export class Emergency {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar' })
   patient_name: string;
 
   @Column({ type: 'varchar' })
@@ -25,22 +27,22 @@ export class Emergency {
   @ManyToOne(() => City, (city) => city.emergency)
    city : City
 
-  @Column()
+  @Column({ type: 'varchar' })
   email: string;
 
-  @Column()
+  @Column({type : "int"})
   age: number;
 
   @Column({ type: 'varchar' })
   hospital: string;
 
-  @Column({ type: 'varchar' })
-  blood_group: string;
+  @Column({ type : "enum" , enum : BloodGroup })
+  blood_group: BloodGroup;
 
-  @Column()
-  gender: string;
+  @Column({ type : "enum" , enum : Gender })
+  gender: Gender;
 
-  @Column({nullable:true})
+  @Column({type : "boolean" , nullable:true})
   status : boolean;
 
   @DeleteDateColumn()

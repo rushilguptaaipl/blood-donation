@@ -8,32 +8,34 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { City } from '../../city/entities/city.entity';
+import { Gender } from '@emergency/enums/gender.enum';
+import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
 
 @Entity()
 export class Donation extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'bigint' })
-  contact: number;
+  @Column({ type: 'varchar' })
+  contact: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   DOB: string;
 
-  @Column()
-  blood_group: string;
+  @Column({type : 'enum' , enum : BloodGroup})
+  blood_group: BloodGroup;
 
   @Column({ nullable: true })
-  disease: string;
+  disease: boolean;
 
-  @Column()
-  gender: string;
+  @Column({type : 'enum' , enum : Gender})
+  gender: Gender;
 
   @ManyToOne(() => City, (city) => city.donation)
   city: City;

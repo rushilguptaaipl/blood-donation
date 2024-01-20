@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { TransactionalEmailsApi } from '@sendinblue/client';
 import { City } from 'src/city/entities/city.entity';
 import { MailService } from './mail.service';
+import { BooleanMessage } from 'src/user/interface/booleanMessage.interface';
 
 @Injectable()
 export class EmergencyService {
@@ -17,23 +18,49 @@ export class EmergencyService {
     private readonly cityRepository: Repository<City>,
     private mailService: MailService,
   ) {}
-  async createEmergency(createEmergencyDto: CreateEmergencyDto):Promise<any> {
-    const { city, ...emergencyDetails } = createEmergencyDto;
-    let emergency:Emergency = await this.emergencyRepo.save(emergencyDetails);
 
-    var cityExists = await this.cityRepository.findOne({
-      where: { city: city },
+  /**
+   * Created Emergency
+   * @param createEmergencyDto 
+   * @returns 
+   */
+  async createEmergency(createEmergencyDto: CreateEmergencyDto):Promise<BooleanMessage> {
+
+    const emergency = new Emergency()
+    emergency.registerar_name = createEmergencyDto.registerar_name;
+    emergency.patient_name = createEmergencyDto.patient_name;
+    emergency.contact = createEmergencyDto.contact
+    emergency.email = createEmergencyDto.email;
+    emergency.age = createEmergencyDto.age;
+    emergency.hospital = createEmergencyDto.hospital;
+    emergency.blood_group = createEmergencyDto.blood_group;
+    emergency.gender = createEmergencyDto.gender
+
+    let cityExists = await this.cityRepository.findOne({
+      where: { city: createEmergencyDto.city },
     });
     if (!cityExists) {
-      cityExists = await this.cityRepository.save({ city });
+      const city = new City()
+      city.city = createEmergencyDto.city,
+      city.createdAt = new Date(Date.now())
+      city.updatedAt = new Date(Date.now())
+      cityExists = await this.cityRepository.save(city);
     }
 
     emergency.city = cityExists;
     emergency.status = false
     
     await this.emergencyRepo.save(emergency);
-   return  await this.mailService.sendUserConfirmation(createEmergencyDto);
-
+    try{
+      await this.mailService.sendAdminConfirmation(createEmergencyDto);
+    }
+    catch(error){
+      console.log("UNABLE TO SEND EMAIL");  
+    }
+    return{
+      success : true,
+      message : "Emergency Sent Successfully"
+    }
    
   }
 }

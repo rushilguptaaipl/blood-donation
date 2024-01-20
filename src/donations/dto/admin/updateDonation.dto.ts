@@ -1,4 +1,8 @@
+import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
+import { Gender } from '@emergency/enums/gender.enum';
 import {
+  IsBoolean,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -6,7 +10,6 @@ import {
 import { Entity } from 'typeorm';
 
 export class AdminUpdateDonationDto {
-
   @IsNotEmpty()
   id: number;
 
@@ -14,7 +17,7 @@ export class AdminUpdateDonationDto {
   name: string;
 
   @IsString()
-  contact: number;
+  contact: string;
 
   @IsString()
   city: string;
@@ -22,13 +25,14 @@ export class AdminUpdateDonationDto {
   @IsString()
   DOB: string;
 
-  @IsString()
-  disease: string;
+  @IsBoolean()
+  disease: boolean;
 
-  @IsString()
-  blood_group: string;
+  @IsEnum(BloodGroup)
+  blood_group: BloodGroup;
 
-  gender: 'Male' | 'Female';
+  @IsEnum(Gender)
+  gender: Gender;
 
   @IsString()
   email: string;

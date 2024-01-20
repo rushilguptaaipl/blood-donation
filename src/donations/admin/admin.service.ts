@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Donation } from "../entities/donation.entity";
-import { AdminFindDonationDto } from "../dto/admin/findDonation.dto";
+import { AdminFilterDonationDto} from "../dto/admin/filterDonation.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { DeleteDonationDto } from "../dto/admin/deleteDonation.dto";
 import { AdminUpdateDonationDto } from "../dto/admin/updateDonation.dto";
 import { City } from "src/city/entities/city.entity";
-import { FindDonationbyIdDto } from "../dto/admin/findDonationById.dto";
+import { AdminGetDonationDto} from "../dto/admin/getDonation";
+import { BooleanMessage } from "src/user/interface/booleanMessage.interface";
+import { AdminListDonationDto } from "@donations/dto/admin/listDonation.dto";
 
 @Injectable()
 export class AdminDonationService {
@@ -17,26 +19,41 @@ export class AdminDonationService {
     private readonly cityRepo : Repository<City>
     ) { }
 
-    async adminFindDonation(adminFindDonationDto: AdminFindDonationDto,): Promise<Donation[]> {
-        const donation: Donation[] = await this.donationRepo.find({
-            where: { blood_group: adminFindDonationDto.blood_group, city: { city: adminFindDonationDto.city } },
-            relations: { city: true },
+    /**
+     * Filter Donation
+     * @param adminFindDonationDto 
+     * @returns 
+     */
+    async adminFilterDonation(adminFilterDonationDto: AdminFilterDonationDto): Promise<Object> {
+        const [donation , count]: [Donation[] , number] = await this.donationRepo.findAndCount({
+            where: { blood_group: adminFilterDonationDto.blood_group, city: { city: adminFilterDonationDto.city } },
+            relations: { city: true }, take :adminFilterDonationDto.take , skip : adminFilterDonationDto.skip
         });
         if (!donation.length) {
-            throw new NotFoundException("Donation Not Found")
+            throw new NotFoundException("Donations Not Found")
         }
-        return donation;
+        return {donation : donation , count : count};
     }
 
-    async adminListDonation(): Promise<Donation[]> {
-        const donation: Donation[] = await this.donationRepo.find({ relations: { city: true } });
+    /**
+     * List all Donations
+     * @param adminListDonationDto 
+     * @returns 
+     */
+    async adminListDonation(adminListDonationDto : AdminListDonationDto): Promise<Object> {
+        const [donation , count] : [Donation[] , number] = await this.donationRepo.findAndCount({ relations: { city: true }  , take: adminListDonationDto.take , skip : adminListDonationDto.skip});        
         if (!donation.length) {
             throw new NotFoundException("Donation Not Found")
         }
-        return donation;
+        return {donation : donation , count : count};
     }
 
-    async adminDeleteDonation(deleteDonationDto: DeleteDonationDto) {
+    /**
+     * Delete Donation
+     * @param deleteDonationDto 
+     * @returns 
+     */
+    async adminDeleteDonation(deleteDonationDto: DeleteDonationDto):Promise<BooleanMessage> {
         const donation: Donation = await this.donationRepo.findOne({
             where: { id: deleteDonationDto.id },
         });
@@ -44,10 +61,19 @@ export class AdminDonationService {
         if (!donation) {
             throw new NotFoundException("Donation Not Found")
         }
-        return await this.donationRepo.softDelete(deleteDonationDto.id);
+         await this.donationRepo.softDelete(deleteDonationDto.id);
+         return {
+            success : true ,
+            message : "Donar Deleted Successfully"
+         }
     }
 
-    async adminUpdateDonation(adminUpdateDonationDto: AdminUpdateDonationDto):Promise<any> {
+    /**
+     * Update Donar Information
+     * @param adminUpdateDonationDto 
+     * @returns 
+     */
+    async adminUpdateDonation(adminUpdateDonationDto: AdminUpdateDonationDto):Promise<BooleanMessage> {
         const donation: Donation = await this.donationRepo.findOne({
             where: { id: adminUpdateDonationDto.id },
             relations: { city: true },
@@ -57,35 +83,42 @@ export class AdminDonationService {
             throw new NotFoundException("Donation Not Found")
         }
 
-        const updatedDonation = new Donation();
-        updatedDonation.name = adminUpdateDonationDto?.name;
-        updatedDonation.blood_group = adminUpdateDonationDto?.blood_group;
-        updatedDonation.contact = adminUpdateDonationDto?.contact;
-        updatedDonation.disease = adminUpdateDonationDto?.disease;
-        updatedDonation.email = adminUpdateDonationDto?.email;
-        updatedDonation.gender = adminUpdateDonationDto?.gender;
-        updatedDonation.DOB = adminUpdateDonationDto?.DOB;
-
-
+        const updateDonation = new Donation();
+        updateDonation.name = adminUpdateDonationDto?.name;
+        updateDonation.blood_group = adminUpdateDonationDto?.blood_group;
+        updateDonation.contact = adminUpdateDonationDto?.contact;
+        updateDonation.disease = adminUpdateDonationDto?.disease;
+        updateDonation.email = adminUpdateDonationDto?.email;
+        updateDonation.gender = adminUpdateDonationDto?.gender;
+        updateDonation.DOB = adminUpdateDonationDto?.DOB;
 
         if (adminUpdateDonationDto?.city) {
-            var cityExists:City = await this.cityRepo.findOne({ where: { city: adminUpdateDonationDto.city } });
-            if (!cityExists) {
+            let isCityExists : City = await this.cityRepo.findOne({ where: { city: adminUpdateDonationDto.city } });
+            if (!isCityExists) {
                 const city  = new City()
                 city.city = adminUpdateDonationDto.city
                 city.createdAt = new Date(Date.now())
                 city.updatedAt = new Date(Date.now())
-                cityExists = await this.cityRepo.save(city);
+                isCityExists = await this.cityRepo.save(city);
             }
-            updatedDonation.city = cityExists;
+            updateDonation.city = isCityExists;
         }
 
-        const result  = await this.donationRepo.update(adminUpdateDonationDto.id,updatedDonation,);
-        return result;
+         await this.donationRepo.update(adminUpdateDonationDto.id,updateDonation);
+
+         return {
+            success : true ,
+            message : "Donar updated Successfully"
+         }
     }
 
-    async adminFindDonationById(findDonationbyIdDto:FindDonationbyIdDto):Promise<Donation>{
-        const donation = await this.donationRepo.findOne({where:{id:findDonationbyIdDto.id},relations:{city:true}});
+    /**
+     * Get Donation
+     * @param adminGetDonationDto 
+     * @returns 
+     */
+    async adminGetDonation(adminGetDonationDto:AdminGetDonationDto):Promise<Donation>{
+        const donation = await this.donationRepo.findOne({where:{id:adminGetDonationDto.id},relations:{city:true}});
         if(!donation){
             throw new NotFoundException("Donation Not Found")
         }

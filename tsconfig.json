@@ -16,6 +16,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@emergency/*" : ["src/emergency/*"],
+      "@donations/*" : ["src/donations/*"],
+      "@city/*" : ["src/city/*"],
+      "@user/*" : ["src/user/*"]
+    }
   }
 }

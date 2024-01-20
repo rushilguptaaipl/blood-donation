@@ -1,8 +1,9 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
-import { AdminEmergencyService } from "./admin.service";
-import { DeleteEmergencyDto } from "../dto/admin/delete-emergency.dto";
-import { AdminChangeStatusDto } from "../dto/admin/change-status.dto";
-import { AuthGuard } from "src/user/guards/auth.guard";
+import { AdminChangeStatusDto } from "@emergency/dto/admin/change-status.dto";
+import { DeleteEmergencyDto } from "@emergency/dto/admin/delete-emergency.dto";
+import { AdminEmergencyService } from "@emergency/admin/admin.service";
+import { AuthGuard } from "@user/guards/auth.guard";
+import { ListEmergencyDto } from "@emergency/dto/admin/list-emergency.dto";
 
 @Controller("admin")
 @UseGuards(AuthGuard)
@@ -10,8 +11,8 @@ export class AdminEmergencyController {
     constructor(private readonly adminEmergencyService: AdminEmergencyService) { }
 
     @Get('listemergency')
-    async adminListEmergency() {
-        return await this.adminEmergencyService.adminListEmergency();
+    async adminListEmergency(@Query() listEmergencyDto : ListEmergencyDto) {
+        return await this.adminEmergencyService.adminListEmergency(listEmergencyDto);
     }
 
     @Post('deleteemergency')

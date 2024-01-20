@@ -1,24 +1,25 @@
 import { Body, Controller, Get, Post, Query, Render, UseGuards } from "@nestjs/common";
 import { AdminDonationService } from "./admin.service";
-import { AdminFindDonationDto } from "../dto/admin/findDonation.dto";
+import { AdminFilterDonationDto} from "../dto/admin/filterDonation.dto";
 import { DeleteDonationDto } from "../dto/admin/deleteDonation.dto";
 import { AdminUpdateDonationDto } from '../dto/admin/updateDonation.dto';
-import { FindDonationbyIdDto } from "../dto/admin/findDonationById.dto";
+import { AdminGetDonationDto} from "../dto/admin/getDonation";
 import { AuthGuard } from "src/user/guards/auth.guard";
+import { AdminListDonationDto } from "@donations/dto/admin/listDonation.dto";
 
 @Controller("admin")
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class AdminDonationContoller {
     constructor(private readonly adminDonationService: AdminDonationService) { }
 
-    @Post('finddonation')
-    async adminfindDonation(@Body() adminFindDonationDto: AdminFindDonationDto) {
-        return await this.adminDonationService.adminFindDonation(adminFindDonationDto);
+    @Post('filterdonation')
+    async adminFilterDonation(@Body() adminFilterDonationDto: AdminFilterDonationDto) {
+        return await this.adminDonationService.adminFilterDonation(adminFilterDonationDto);
     }
 
     @Get('listdonation')
-    async adminListDonation() {
-        return await this.adminDonationService.adminListDonation();
+    async adminListDonation(@Query() adminListDonationDto : AdminListDonationDto) {
+        return await this.adminDonationService.adminListDonation(adminListDonationDto);
     }
 
     @Post('deletedonation')
@@ -31,8 +32,8 @@ export class AdminDonationContoller {
         return this.adminDonationService.adminUpdateDonation(adminUpdateDonationDto);
     }
 
-    @Post('findDonationById')
-    async adminFindDonationById(@Body() findDonationbyIdDto:FindDonationbyIdDto){
-        return await this.adminDonationService.adminFindDonationById(findDonationbyIdDto)
+    @Get('getDonation')
+    async adminGetDonation(@Query() adminGetDonationDto:AdminGetDonationDto){
+        return await this.adminDonationService.adminGetDonation(adminGetDonationDto)
 }
 }

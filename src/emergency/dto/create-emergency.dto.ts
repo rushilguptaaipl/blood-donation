@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Gender } from '../enums/gender.enum';
+import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
 
 export class CreateEmergencyDto {
   @IsString()
@@ -27,10 +29,11 @@ export class CreateEmergencyDto {
   @IsNotEmpty()
   hospital: string;
 
-  @IsString()
+  @IsEnum(BloodGroup)
   @IsNotEmpty()
-  blood_group: string;
+  blood_group: BloodGroup;
 
+  @IsEnum(Gender)
   @IsNotEmpty()
-  gender: 'M' | 'F';
+  gender: Gender;
 }

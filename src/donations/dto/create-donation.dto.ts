@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
+import { Gender } from '@emergency/enums/gender.enum';
+import { IsBoolean, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateDonationDto {
   @IsString()
@@ -7,7 +9,7 @@ export class CreateDonationDto {
 
   @IsNotEmpty()
   @IsString()
-  contact: number;
+  contact: string;
 
   @IsString()
   @IsNotEmpty()
@@ -17,15 +19,16 @@ export class CreateDonationDto {
   @IsString()
   DOB: string;
 
-  @IsString()
-  disease: string;
+  @IsBoolean()
+  disease: boolean;
 
-  @IsString()
+  @IsEnum(BloodGroup)
   @IsNotEmpty()
-  blood_group:string
+  blood_group : BloodGroup
 
+  @IsEnum(Gender)
   @IsNotEmpty()
-  gender : "M" | "F"
+  gender : Gender
 
   @IsString()
   @IsNotEmpty()
