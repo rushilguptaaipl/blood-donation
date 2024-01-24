@@ -9,6 +9,7 @@ import { City } from "src/city/entities/city.entity";
 import { AdminGetDonationDto} from "../dto/admin/getDonation";
 import { BooleanMessage } from "src/user/interface/booleanMessage.interface";
 import { AdminListDonationDto } from "@donations/dto/admin/listDonation.dto";
+import { I18nService } from "nestjs-i18n";
 
 @Injectable()
 export class AdminDonationService {
@@ -16,7 +17,8 @@ export class AdminDonationService {
     constructor(@InjectRepository(Donation)
     private donationRepo: Repository<Donation>,
     @InjectRepository(City)
-    private readonly cityRepo : Repository<City>
+    private readonly cityRepo : Repository<City>,
+    private readonly i18n : I18nService
     ) { }
 
     /**
@@ -30,7 +32,7 @@ export class AdminDonationService {
             relations: { city: true }, take :adminFilterDonationDto.take , skip : adminFilterDonationDto.skip
         });
         if (!donation.length) {
-            throw new NotFoundException("Donations Not Found")
+            throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
         return {donation : donation , count : count};
     }
@@ -43,7 +45,7 @@ export class AdminDonationService {
     async adminListDonation(adminListDonationDto : AdminListDonationDto): Promise<Object> {
         const [donation , count] : [Donation[] , number] = await this.donationRepo.findAndCount({ relations: { city: true }  , take: adminListDonationDto.take , skip : adminListDonationDto.skip});        
         if (!donation.length) {
-            throw new NotFoundException("Donation Not Found")
+            throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
         return {donation : donation , count : count};
     }
@@ -64,7 +66,7 @@ export class AdminDonationService {
          await this.donationRepo.softDelete(deleteDonationDto.id);
          return {
             success : true ,
-            message : "Donar Deleted Successfully"
+            message : this.i18n.t("donation.DONAR_DELETED_SUCCESSFULLY")
          }
     }
 
@@ -80,7 +82,7 @@ export class AdminDonationService {
         });
 
         if (!donation) {
-            throw new NotFoundException("Donation Not Found")
+            throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
 
         const updateDonation = new Donation();
@@ -108,7 +110,7 @@ export class AdminDonationService {
 
          return {
             success : true ,
-            message : "Donar updated Successfully"
+            message : this.i18n.t("donation.DONAR_UPDATED_SUCCESSFULLY")
          }
     }
 
@@ -120,7 +122,7 @@ export class AdminDonationService {
     async adminGetDonation(adminGetDonationDto:AdminGetDonationDto):Promise<Donation>{
         const donation = await this.donationRepo.findOne({where:{id:adminGetDonationDto.id},relations:{city:true}});
         if(!donation){
-            throw new NotFoundException("Donation Not Found")
+            throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
         return donation;
     }

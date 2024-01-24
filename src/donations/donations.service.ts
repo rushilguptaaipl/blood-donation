@@ -5,6 +5,7 @@ import { Donation } from './entities/donation.entity';
 import { Repository } from 'typeorm';
 import { City } from 'src/city/entities/city.entity';
 import { BooleanMessage } from 'src/user/interface/booleanMessage.interface';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class DonationsService {
@@ -13,9 +14,12 @@ export class DonationsService {
     private donationRepository: Repository<Donation>,
     @InjectRepository(City)
     private cityRepository: Repository<City>,
+    private readonly i18n: I18nService,
   ) {}
 
-  async createDonation(createDonationDto: CreateDonationDto): Promise<BooleanMessage> {
+  async createDonation(
+    createDonationDto: CreateDonationDto,
+  ): Promise<BooleanMessage> {
     let isDonationExist: Donation = await this.donationRepository.findOne({
       where: {
         name: createDonationDto.name,
@@ -29,7 +33,9 @@ export class DonationsService {
     });
 
     if (isDonationExist) {
-      throw new ConflictException('Donation Already Exists');
+      throw new ConflictException(
+        this.i18n.t('donation.DONATION_ALREADY_EXISTS'),
+      );
     }
 
     const donation = new Donation();
@@ -54,14 +60,14 @@ export class DonationsService {
       newCity.updatedAt = new Date(Date.now());
       city = await this.cityRepository.save(newCity);
     }
-    
+
     donation.city = city;
 
-    await this.donationRepository.save(donation)
+    await this.donationRepository.save(donation);
 
     return {
-      message: 'Donar Saved Successfully',
       success: true,
+      message: this.i18n.t('donation.DONATION_SAVED_SUCCESSFULLY'),
     };
   }
 }

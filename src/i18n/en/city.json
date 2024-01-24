@@ -1,0 +1,8 @@
+{
+    "CITY_ALREADY_EXISTS" : "City already exists",
+    "CITY_ADDED_SUCCESSFULLY" : "City added successfully",
+    "CITY_NOT_FOUND" : "City not found",
+    "CITY_DELETED_SUCCESSFULLY" : "City deleted successfully",
+    "CITY_UPDATED_SUCCESSFULLY" : "City updated successfully"
+
+}

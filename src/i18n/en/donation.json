@@ -1,0 +1,7 @@
+{
+    "DONATION_NOT_FOUND" : "Donation not found",
+    "DONAR_DELETED_SUCCESSFULLY" : "Donar deleted successfully",
+    "DONAR_UPDATED_SUCCESSFULLY" : "Donar updated successfully",
+    "DONATION_ALREADY_EXISTS" : "Donar already exists",
+    "DONATION_SAVED_SUCCESSFULLY" : "Donar saved successfully"
+}

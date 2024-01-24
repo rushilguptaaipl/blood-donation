@@ -14,6 +14,8 @@ import * as fs from 'fs';
 import { JwtModule } from '@nestjs/jwt';
 import { User } from './user/entities/user.entity';
 import { jwtConstants } from './user/constants/constants';
+import { I18nModule, AcceptLanguageResolver, QueryResolver, HeaderResolver } from 'nestjs-i18n';
+import * as path from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -36,6 +38,19 @@ import { jwtConstants } from './user/constants/constants';
       url : process.env.DB_URL,
       synchronize: Boolean(process.env.DB_SYNCHRONIZE),
       autoLoadEntities:true,
+    }),
+
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: path.join(__dirname, "../src/", '/i18n/'),
+        watch: true,
+      },
+      resolvers: [
+        { use: QueryResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+        new HeaderResolver(['x-lang']),
+      ],
     }),
     
     EmergencyModule,

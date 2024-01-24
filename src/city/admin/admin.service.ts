@@ -7,11 +7,16 @@ import { DeleteCityDto } from '../dto/admin/deleteCity.dto';
 import { ListCityDto } from '../dto/admin/listCity.dto';
 import { BooleanMessage } from 'src/user/interface/booleanMessage.interface';
 
+import { GetCityDto } from '@city/dto/admin/getCity.dto';
+import { UpdateCityDto } from '@city/dto/admin/updateCity.dto';
+import { I18nService } from 'nestjs-i18n';
+
 @Injectable()
 export class AdminCityService {
   constructor(
     @InjectRepository(City)
     private cityRepository: Repository<City>,
+    private readonly i18n : I18nService
   ) {}
 
   /**
@@ -25,14 +30,14 @@ export class AdminCityService {
     });
 
     if (isCityExists) {
-      throw new NotFoundException('City Already Exists');
+      throw new NotFoundException(this.i18n.t("city.CITY_ALREADY_EXISTS"));
     }
 
     await this.cityRepository.save(createCityDto);
 
     return {
       success: true,
-      message: 'City Added Successfully',
+      message: this.i18n.t("city.CITY_ADDED_SUCCESSFULLY"),
     };
   }
 
@@ -46,10 +51,10 @@ export class AdminCityService {
       await this.cityRepository.findAndCount({
         take: listCityDto.take,
         skip: listCityDto.skip,
-        order:{createdAt:"DESC"}
+        order: { createdAt: 'DESC' },
       });
     if (!city.length) {
-      throw new NotFoundException('City Not Found');
+      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
     }
     return { city: city, count: count };
   }
@@ -59,18 +64,58 @@ export class AdminCityService {
    * @param deleteCityDto
    * @returns
    */
-  async adminDeleteCity(deleteCityDto: DeleteCityDto) :Promise<BooleanMessage> {
+  async adminDeleteCity(deleteCityDto: DeleteCityDto): Promise<BooleanMessage> {
     const city = await this.cityRepository.findOne({
       where: { id: deleteCityDto.id },
     });
     if (!city) {
-      throw new NotFoundException('City Not Found');
+      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
     }
     await this.cityRepository.softDelete(deleteCityDto.id);
 
     return {
       success: true,
-      message: 'City deleted Successfully',
+      message: this.i18n.t("city.CITY_DELETED_SUCCESSFULLY"),
     };
+  }
+
+  /**
+   * update city name
+   * @param updateCityDto
+   * @returns
+   */
+  async adminUpdateCity(updateCityDto: UpdateCityDto): Promise<BooleanMessage> {
+    const city = await this.cityRepository.findOne({
+      where: { id: updateCityDto.id },
+    });
+    if (!city) {
+      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
+    }
+
+    city.city = updateCityDto.city;
+
+    await this.cityRepository.update(city.id, city);
+
+    return {
+      success: true,
+      message: this.i18n.t("city.CITY_UPDATED_SUCCESSFULLY"),
+    };
+  }
+
+  /**
+   * get city
+   * @param getCityDto
+   * @returns
+   */
+  async adminGetCity(getCityDto: GetCityDto): Promise<City> {
+    const city = await this.cityRepository.findOne({
+      where: { id: getCityDto.id },
+    });
+
+    if (!city) {
+      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
+    }
+
+    return city;
   }
 }

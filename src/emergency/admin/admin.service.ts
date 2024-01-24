@@ -7,12 +7,14 @@ import { DeleteEmergencyDto } from "../dto/admin/delete-emergency.dto";
 import { AdminChangeStatusDto } from "../dto/admin/change-status.dto";
 import { BooleanMessage } from "src/user/interface/booleanMessage.interface";
 import { ListEmergencyDto } from "@emergency/dto/admin/list-emergency.dto";
+import { I18nService } from "nestjs-i18n";
 
 @Injectable()
 export class AdminEmergencyService {
     constructor(
         @InjectRepository(Emergency)
         private readonly emergencyRepository: Repository<Emergency>,
+        private readonly i18n : I18nService
     ) { }
 
     /**
@@ -22,7 +24,7 @@ export class AdminEmergencyService {
     async adminListEmergency(listEmergencyDto : ListEmergencyDto): Promise<Object> {
         const [emergency , count]: [Emergency[] , number] = await this.emergencyRepository.findAndCount({ relations: { city: true }, order: { createdAt: "DESC" } , skip:listEmergencyDto.skip , take:listEmergencyDto.take});
         if (!emergency.length) {
-            throw new NotFoundException("Emergency Not Found")
+            throw new NotFoundException(this.i18n.t("emergency.EMERGENCY_NOT_FOUND"))
         }
         return {emergency : emergency , count : count};
     }
@@ -35,13 +37,13 @@ export class AdminEmergencyService {
     async adminDeleteEmergency(deleteEmergencyDto: DeleteEmergencyDto):Promise<BooleanMessage> {
         const emergency = await this.emergencyRepository.findOne({ where: { id: deleteEmergencyDto.id } })
         if (!emergency) {
-            throw new NotFoundException("Emergency Not Found")
+            throw new NotFoundException(this.i18n.t("emergency.EMERGENCY_NOT_FOUND"))
         }
         await this.emergencyRepository.softDelete(deleteEmergencyDto.id)
 
         return {
             success : true ,
-            message : "Emergency Deleted Successfully"
+            message : this.i18n.t("emergency.EMERGENCY_DELETED_SUCCESSFULLY")
         }
     }
 
@@ -53,7 +55,7 @@ export class AdminEmergencyService {
     async adminChangeStatus(changeStatusDto : AdminChangeStatusDto):Promise<BooleanMessage>{
         const emergency:Emergency = await this.emergencyRepository.findOne({ where: { id: changeStatusDto.id } })
         if (!emergency) {
-            throw new NotFoundException("Emergency Not Found")
+            throw new NotFoundException(this.i18n.t("emergency.EMERGENCY_NOT_FOUND"))
         }   
         if(emergency.status == false){
             emergency.status = true
@@ -65,7 +67,7 @@ export class AdminEmergencyService {
 
          return {
             success : true ,
-            message : " Status Updated Successfully"
+            message : this.i18n.t("emergency.EMERGENCY_UPDATED_SUCCESSFULLY")
         }
     }
 }

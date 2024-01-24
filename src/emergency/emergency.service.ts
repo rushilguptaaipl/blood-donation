@@ -8,6 +8,7 @@ import { TransactionalEmailsApi } from '@sendinblue/client';
 import { City } from 'src/city/entities/city.entity';
 import { MailService } from './mail.service';
 import { BooleanMessage } from 'src/user/interface/booleanMessage.interface';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class EmergencyService {
@@ -17,6 +18,7 @@ export class EmergencyService {
     @InjectRepository(City)
     private readonly cityRepository: Repository<City>,
     private mailService: MailService,
+    private readonly i18n : I18nService
   ) {}
 
   /**
@@ -59,7 +61,7 @@ export class EmergencyService {
     }
     return{
       success : true,
-      message : "Emergency Sent Successfully"
+      message : this.i18n.t("emergency.EMEGENCY_SENT_SUCCESSFULLY")
     }
    
   }
