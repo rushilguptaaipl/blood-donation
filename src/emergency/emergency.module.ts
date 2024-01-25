@@ -13,7 +13,7 @@ import { Donation } from '@donations/entities/donation.entity';
 
 @Module({
   imports:[TypeOrmModule.forFeature([Emergency,City,Donation])],
-  controllers: [EmergencyController,AdminEmergencyController, DonationsService],
-  providers: [EmergencyService,TransactionalEmailsApi,MailService,AdminEmergencyService]
+  controllers: [EmergencyController,AdminEmergencyController],
+  providers: [EmergencyService,TransactionalEmailsApi,MailService,AdminEmergencyService,DonationsService]
 })
 export class EmergencyModule {}
