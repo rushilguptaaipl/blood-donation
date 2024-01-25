@@ -65,6 +65,10 @@ export class AdminEmergencyService {
 
         const donations = await this.donationRepository.find({ where: { blood_group: emergency.blood_group, city: { city: emergency.city.city } }, relations: { city: true } })
 
+        if(!donations.length){
+            throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
+        }
+
         try {
             if(emergency.status == false){
                 await this.mailService.sendDonations(donations, emergency)
