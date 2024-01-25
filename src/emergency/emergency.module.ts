@@ -8,10 +8,12 @@ import { City } from 'src/city/entities/city.entity';
 import { MailService } from './mail.service';
 import { AdminEmergencyController } from './admin/admin.controller';
 import { AdminEmergencyService } from './admin/admin.service';
+import { DonationsService } from '@donations/donations.service';
+import { Donation } from '@donations/entities/donation.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Emergency,City])],
-  controllers: [EmergencyController,AdminEmergencyController],
+  imports:[TypeOrmModule.forFeature([Emergency,City,Donation])],
+  controllers: [EmergencyController,AdminEmergencyController, DonationsService],
   providers: [EmergencyService,TransactionalEmailsApi,MailService,AdminEmergencyService]
 })
 export class EmergencyModule {}
