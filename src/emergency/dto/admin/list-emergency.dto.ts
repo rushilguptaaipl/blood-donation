@@ -1,11 +1,15 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsPositive } from "class-validator";
 
-export class ListEmergencyDto{
-
-    @IsNotEmpty()
-    take : number
+export class ListEmergencyDto {
 
     @IsNotEmpty()
-    skip : number
+    @IsNumber()
+    @IsPositive()
+    take: number
+
+    @IsNumber()
+    @IsPositive()
+    @IsNotEmpty()
+    skip: number
 
 }

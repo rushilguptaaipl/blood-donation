@@ -56,8 +56,6 @@ export class DonationsService {
     if (!city) {
       const newCity = new City();
       newCity.city = createDonationDto.city;
-      newCity.createdAt = new Date(Date.now());
-      newCity.updatedAt = new Date(Date.now());
       city = await this.cityRepository.save(newCity);
     }
 

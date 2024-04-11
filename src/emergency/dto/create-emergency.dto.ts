@@ -1,12 +1,16 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 import { Gender } from '../enums/gender.enum';
 import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
+import { Transform } from 'class-transformer';
 
 export class CreateEmergencyDto {
-  @IsString()
+
+  @Transform(({ value }) => value ? value.trim() : value)
   @IsNotEmpty()
+  @IsString()
   registerar_name: string;
 
+  @Transform(({ value }) => value ? value.trim() : value)
   @IsNotEmpty()
   @IsString()
   patient_name: string;
@@ -18,15 +22,19 @@ export class CreateEmergencyDto {
   @IsNotEmpty()
   city: string;
 
+  @Transform(({ value }) => value ? value.trim() : value)
   @IsNotEmpty()
-  @IsString()
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
   age: number;
 
-  @IsString()
+  @Transform(({ value }) => value ? value.trim() : value)
   @IsNotEmpty()
+  @IsString()
   hospital: string;
 
   @IsEnum(BloodGroup)

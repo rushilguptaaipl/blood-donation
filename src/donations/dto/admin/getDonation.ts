@@ -1,6 +1,9 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNumber, IsPositive } from "class-validator";
 
 export class AdminGetDonationDto {
-    // @IsNotEmpty()
-    id:number;
+
+    @IsNotEmpty()
+    @IsPositive()
+    @IsNumber()
+    id: number;
 }

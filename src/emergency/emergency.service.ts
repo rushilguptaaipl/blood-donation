@@ -44,8 +44,6 @@ export class EmergencyService {
     if (!cityExists) {
       const city = new City()
       city.city = createEmergencyDto.city,
-      city.createdAt = new Date(Date.now())
-      city.updatedAt = new Date(Date.now())
       cityExists = await this.cityRepository.save(city);
     }
 

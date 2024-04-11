@@ -26,7 +26,7 @@ export class AdminEmergencyService {
      * List Emergency
      * @returns 
      */
-    async adminListEmergency(listEmergencyDto: ListEmergencyDto): Promise<Object> {
+    async adminListEmergency(listEmergencyDto: ListEmergencyDto): Promise<{ emergency: Emergency[], count: number }> {
         const [emergency, count]: [Emergency[], number] = await this.emergencyRepository.findAndCount({ relations: { city: true }, order: { createdAt: "DESC" }, skip: listEmergencyDto.skip, take: listEmergencyDto.take });
         if (!emergency.length) {
             throw new NotFoundException(this.i18n.t("emergency.EMERGENCY_NOT_FOUND"))
@@ -65,12 +65,12 @@ export class AdminEmergencyService {
 
         const donations = await this.donationRepository.find({ where: { blood_group: emergency.blood_group, city: { city: emergency.city.city } }, relations: { city: true } })
 
-        if(!donations.length){
+        if (!donations.length) {
             throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
 
         try {
-            if(emergency.status == false){
+            if (emergency.status == false) {
                 await this.mailService.sendDonations(donations, emergency)
             }
             emergency.status = true

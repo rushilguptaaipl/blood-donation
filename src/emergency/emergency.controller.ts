@@ -11,6 +11,4 @@ export class EmergencyController {
   createEmergency(@Body() createEmergencyDto: CreateEmergencyDto) {
     return this.emergencyService.createEmergency(createEmergencyDto);
   }
-
-
 }

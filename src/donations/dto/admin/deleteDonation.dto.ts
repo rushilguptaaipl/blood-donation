@@ -1,6 +1,9 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsPositive} from "class-validator";
 
 export class DeleteDonationDto {
+
     @IsNotEmpty()
-    id:number;
+    @IsNumber()
+    @IsPositive()
+    id: number;
 }

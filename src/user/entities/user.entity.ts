@@ -1,29 +1,29 @@
-import { BaseEntity, Collection, Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Collection, Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
-export class User extends BaseEntity{
-    
+export class User extends BaseEntity {
+
     @PrimaryGeneratedColumn()
-    id:number
+    id: number
 
     @Column()
-    name:string
+    name: string
 
     @Column()
-    email:string
+    email: string
 
     @Column()
-    password:string
+    password: string
 
     @Column()
-    role:string
+    role: string
 
     @DeleteDateColumn()
     deletedAt?: Date;
-  
+
     @CreateDateColumn({ type: 'timestamp' })
     public createdAt: Date;
-  
-    @CreateDateColumn({ type: 'timestamp' })
+
+    @UpdateDateColumn({ type: 'timestamp' })
     public updatedAt: Date;
 }

@@ -6,6 +6,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { City } from '../../city/entities/city.entity';
 import { Gender } from '@emergency/enums/gender.enum';
@@ -19,22 +20,22 @@ export class Donation extends BaseEntity {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'varchar' })
-  contact: string;
+  @Column({ type: 'bigint' })
+  contact: number;
 
   @Column({ type: 'varchar' })
   email: string;
 
   @Column({ type: 'varchar' })
-  DOB: string;
+  DOB: Date;
 
-  @Column({type : 'enum' , enum : BloodGroup})
+  @Column({ type: 'enum', enum: BloodGroup })
   blood_group: BloodGroup;
 
-  @Column({ nullable: true })
+  @Column({ type: "boolean" })
   disease: boolean;
 
-  @Column({type : 'enum' , enum : Gender})
+  @Column({ type: 'enum', enum: Gender })
   gender: Gender;
 
   @ManyToOne(() => City, (city) => city.donation)
@@ -46,6 +47,6 @@ export class Donation extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt: Date;
 }

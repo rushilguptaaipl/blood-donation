@@ -1,8 +1,16 @@
+import { IsNumber, IsOptional, IsPositive, Min } from "class-validator"
 
 
 export class ListCityDto {
-    
-    take : number
 
-    skip : number
+    @IsOptional()
+    @IsNumber()
+    @IsPositive()
+    @Min(1)
+    take: number
+
+    @IsOptional()
+    @IsNumber()
+    @IsPositive()
+    skip: number
 }

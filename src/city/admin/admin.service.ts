@@ -16,8 +16,8 @@ export class AdminCityService {
   constructor(
     @InjectRepository(City)
     private cityRepository: Repository<City>,
-    private readonly i18n : I18nService
-  ) {}
+    private readonly i18n: I18nService
+  ) { }
 
   /**
    * Create City
@@ -46,7 +46,7 @@ export class AdminCityService {
    * @param listCityDto
    * @returns
    */
-  async adminListCity(listCityDto: ListCityDto): Promise<Object> {
+  async adminListCity(listCityDto: ListCityDto): Promise<{ city: City[], count: number }> {
     const [city, count]: [City[], number] =
       await this.cityRepository.findAndCount({
         take: listCityDto.take,

@@ -11,7 +11,7 @@ export class AdminEmergencyController {
     constructor(private readonly adminEmergencyService: AdminEmergencyService) { }
 
     @Get('listemergency')
-    async adminListEmergency(@Query() listEmergencyDto : ListEmergencyDto) {
+    async adminListEmergency(@Query() listEmergencyDto: ListEmergencyDto) {
         return await this.adminEmergencyService.adminListEmergency(listEmergencyDto);
     }
 
@@ -21,7 +21,7 @@ export class AdminEmergencyController {
     }
 
     @Post('changestatus')
-    async adminChangeStatus(@Body() changeStatusDto : AdminChangeStatusDto) {
+    async adminChangeStatus(@Body() changeStatusDto: AdminChangeStatusDto) {
         return await this.adminEmergencyService.adminChangeStatus(changeStatusDto)
-    } 
+    }
 }

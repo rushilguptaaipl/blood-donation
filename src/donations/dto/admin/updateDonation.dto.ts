@@ -1,29 +1,41 @@
 import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
 import { Gender } from '@emergency/enums/gender.enum';
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
+  IsEmail,
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsPositive,
   IsString,
 } from 'class-validator';
 import { Entity } from 'typeorm';
 
 export class AdminUpdateDonationDto {
+
   @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
   id: number;
 
+  @Transform(({ value }) => value ? value.trim() : value)
+  @IsNotEmpty()
   @IsString()
   name: string;
 
-  @IsString()
-  contact: string;
 
+  @IsNotEmpty()
+  @IsPositive()
+  contact: number;
+
+  @Transform(({ value }) => value ? value.trim() : value)
+  @IsNotEmpty()
   @IsString()
   city: string;
 
-  @IsString()
-  DOB: string;
+  @IsNotEmpty()
+  DOB: Date;
 
   @IsBoolean()
   disease: boolean;
@@ -34,6 +46,8 @@ export class AdminUpdateDonationDto {
   @IsEnum(Gender)
   gender: Gender;
 
-  @IsString()
+  @Transform(({ value }) => value ? value.trim() : value)
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 }

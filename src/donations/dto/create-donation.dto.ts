@@ -1,23 +1,26 @@
 import { BloodGroup } from '@emergency/enums/bloodGroup.enum';
 import { Gender } from '@emergency/enums/gender.enum';
-import { IsBoolean, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsPositive, IsString } from 'class-validator';
 
 export class CreateDonationDto {
-  @IsString()
+
+  @Transform(({ value }) => value ? value.trim() : value)
   @IsNotEmpty()
+  @IsString()
   name: string;
 
   @IsNotEmpty()
-  @IsString()
-  contact: string;
+  @IsPositive()
+  contact: number;
 
-  @IsString()
+  @Transform(({ value }) => value ? value.trim() : value)
   @IsNotEmpty()
+  @IsString()
   city: string;
 
   @IsNotEmpty()
-  @IsString()
-  DOB: string;
+  DOB: Date;
 
   @IsBoolean()
   disease: boolean;
@@ -30,7 +33,8 @@ export class CreateDonationDto {
   @IsNotEmpty()
   gender : Gender
 
-  @IsString()
+  @Transform(({ value }) => value ? value.trim() : value)
   @IsNotEmpty()
+  @IsEmail()
   email :string
 }
