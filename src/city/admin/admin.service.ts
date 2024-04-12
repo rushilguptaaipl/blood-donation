@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from '../entities/city.entity';
@@ -85,6 +85,13 @@ export class AdminCityService {
    * @returns
    */
   async adminUpdateCity(updateCityDto: UpdateCityDto): Promise<BooleanMessage> {
+
+    const isCityExists = await this.cityRepository.findOne({ where: { city: updateCityDto.city } });
+
+    if (isCityExists) {
+      throw new BadRequestException(this.i18n.t("city.CITY_ALREADY_EXISTS"))
+    }
+
     const city = await this.cityRepository.findOne({
       where: { id: updateCityDto.id },
     });

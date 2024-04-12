@@ -24,7 +24,7 @@ export class AdminUpdateDonationDto {
   @IsString()
   name: string;
 
-
+  @Transform(({ value }) => value ? value = Number(value) : null)
   @IsNotEmpty()
   @IsPositive()
   contact: number;
