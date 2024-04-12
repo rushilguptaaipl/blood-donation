@@ -23,7 +23,7 @@ import * as path from 'path';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60000s' },
+      signOptions: { expiresIn: '10s' },
     }),
     DonationsModule,
     TypeOrmModule.forRoot({

@@ -12,8 +12,8 @@ import { AdminListDonationDto } from "@donations/dto/admin/listDonation.dto";
 export class AdminDonationContoller {
     constructor(private readonly adminDonationService: AdminDonationService) { }
 
-    @Post('filterdonation')
-    async adminFilterDonation(@Body() adminFilterDonationDto: AdminFilterDonationDto) {
+    @Get('filterdonation')
+    async adminFilterDonation(@Query() adminFilterDonationDto: AdminFilterDonationDto) {
         return await this.adminDonationService.adminFilterDonation(adminFilterDonationDto);
     }
 

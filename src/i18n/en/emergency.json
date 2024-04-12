@@ -2,5 +2,6 @@
     "EMERGENCY_NOT_FOUND" : "Emergency not found",
     "EMERGENCY_DELETED_SUCCESSFULLY" : "Emergency deleted successfully",
     "EMERGENCY_UPDATED_SUCCESSFULLY" : "Emergency updated successfully",
-    "EMEGENCY_SENT_SUCCESSFULLY" : "Emergency sent successfully"
+    "EMEGENCY_SENT_SUCCESSFULLY" : "Emergency sent successfully",
+    "UMABLE_TO_SEND_MAIL" : "Unable to send mail"
 }

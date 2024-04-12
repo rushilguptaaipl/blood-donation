@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -76,7 +76,7 @@ export class AdminEmergencyService {
             emergency.status = true
         }
         catch (error) {
-            console.log("UNABLE TO SEND EMAIL");
+            throw new BadRequestException(this.i18n.t("emergency.UMABLE_TO_SEND_MAIL"))
         }
 
         await this.emergencyRepository.update(emergency.id, emergency)
