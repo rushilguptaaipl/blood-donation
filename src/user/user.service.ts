@@ -6,14 +6,15 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { I18nService } from 'nestjs-i18n';
+import * as CryptoJS from "crypto-js"
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-    private readonly i18n : I18nService
-  ) {}
+    private readonly i18n: I18nService
+  ) { }
 
   /**
    * Login
@@ -21,6 +22,10 @@ export class UserService {
    * @returns
    */
   async login(loginDto: LoginDto): Promise<any> {
+
+    const bytes = CryptoJS.AES.decrypt(loginDto.password, 'prOrV8XPyf')
+    const password = bytes.toString(CryptoJS.enc.Utf8);
+
     const user = await this.userRepository.findOne({
       where: { email: loginDto.email },
     });
@@ -28,7 +33,7 @@ export class UserService {
       throw new NotFoundException(this.i18n.t("user.USER_NOT_FOUND"));
     }
 
-    const isMatch = await bcrypt.compare(loginDto.password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException(this.i18n.t("user.PASSWORD_INCORRECT"));
     }
