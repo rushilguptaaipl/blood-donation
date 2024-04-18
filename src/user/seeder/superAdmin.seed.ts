@@ -2,16 +2,20 @@ import { Connection } from 'typeorm';
 import { Factory, Seeder } from 'typeorm-seeding';
 import { User } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Roles } from 'src/roles/entities/roles.entity';
 
 
 export class SuperAdminUserCreateSeed implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {
+
+        const role = await Roles.findOne({where : {name : "superadmin"}});
+
         const data = [
             {
                 name: 'SuperAdmin',
                 email: 'superadmin@gmail.com',
                 password: 'superadmin',
-                role: "superadmin",
+                role: role,
                 createdAt: new Date(Date.now()),
                 updatedAt: new Date(Date.now())
             }

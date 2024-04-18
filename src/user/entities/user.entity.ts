@@ -1,29 +1,42 @@
-import { BaseEntity, Collection, Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Roles } from 'src/roles/entities/roles.entity';
+import {
+  BaseEntity,
+  Collection,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column()
+  name: string;
 
-    @Column()
-    name: string
+  @Column()
+  email: string;
 
-    @Column()
-    email: string
+  @Column()
+  password: string;
 
-    @Column()
-    password: string
+  @ManyToOne(() => Roles, (roles) => roles.id)
+  role: Roles;
 
-    @Column()
-    role: string
+  @Column({nullable:true , type :"varchar" , length:5000})
+  refresh_token : string
 
-    @DeleteDateColumn()
-    deletedAt?: Date;
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
-    @CreateDateColumn({ type: 'timestamp' })
-    public createdAt: Date;
+  @CreateDateColumn({ type: 'timestamp' })
+  public createdAt: Date;
 
-    @UpdateDateColumn({ type: 'timestamp' })
-    public updatedAt: Date;
+  @UpdateDateColumn({ type: 'timestamp' })
+  public updatedAt: Date;
 }

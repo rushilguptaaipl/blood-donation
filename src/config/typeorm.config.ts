@@ -1,5 +1,6 @@
 import {  ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
+import { seeds } from '../../seed.runner';
 
  config();
 const configService = new ConfigService();
@@ -18,7 +19,8 @@ module.exports = {
 //   ],
 //   factories: ["dist/**/factory/**/*.{js, ts}"],
 //   seeds: ["dist/**/seeds/**/*.{js, ts}"],
-seeds:["dist/**/*.seed.{js, ts}"]
+// seeds:["dist/**/*.seed.{js, ts}"]
+seeds: seeds.map((seed) => seed.path),
 }
 
 

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from '../entities/city.entity';
@@ -10,14 +14,16 @@ import { BooleanMessage } from 'src/user/interface/booleanMessage.interface';
 import { GetCityDto } from '@city/dto/admin/getCity.dto';
 import { UpdateCityDto } from '@city/dto/admin/updateCity.dto';
 import { I18nService } from 'nestjs-i18n';
+import { AdminCityRepository } from '@city/repository/admin.repository';
 
 @Injectable()
 export class AdminCityService {
   constructor(
     @InjectRepository(City)
     private cityRepository: Repository<City>,
-    private readonly i18n: I18nService
-  ) { }
+    private readonly i18n: I18nService,
+    private readonly _cityRepository: AdminCityRepository,
+  ) {}
 
   /**
    * Create City
@@ -30,14 +36,14 @@ export class AdminCityService {
     });
 
     if (isCityExists) {
-      throw new NotFoundException(this.i18n.t("city.CITY_ALREADY_EXISTS"));
+      throw new NotFoundException(this.i18n.t('city.CITY_ALREADY_EXISTS'));
     }
 
     await this.cityRepository.save(createCityDto);
 
     return {
       success: true,
-      message: this.i18n.t("city.CITY_ADDED_SUCCESSFULLY"),
+      message: this.i18n.t('city.CITY_ADDED_SUCCESSFULLY'),
     };
   }
 
@@ -46,17 +52,14 @@ export class AdminCityService {
    * @param listCityDto
    * @returns
    */
-  async adminListCity(listCityDto: ListCityDto): Promise<{ city: City[], count: number }> {
-    const [city, count]: [City[], number] =
-      await this.cityRepository.findAndCount({
-        take: listCityDto.take,
-        skip: listCityDto.skip,
-        order: { createdAt: 'DESC' },
-      });
-    if (!city.length) {
-      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
+  async adminListCity(
+    listCityDto: ListCityDto,
+  ): Promise<{ city: City[]; count: number }> {
+    const city = await this._cityRepository.adminListCity(listCityDto);
+    if (!city.city.length) {
+      throw new NotFoundException(this.i18n.t('city.CITY_NOT_FOUND'));
     }
-    return { city: city, count: count };
+    return city;
   }
 
   /**
@@ -69,13 +72,13 @@ export class AdminCityService {
       where: { id: deleteCityDto.id },
     });
     if (!city) {
-      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
+      throw new NotFoundException(this.i18n.t('city.CITY_NOT_FOUND'));
     }
     await this.cityRepository.softDelete(deleteCityDto.id);
 
     return {
       success: true,
-      message: this.i18n.t("city.CITY_DELETED_SUCCESSFULLY"),
+      message: this.i18n.t('city.CITY_DELETED_SUCCESSFULLY'),
     };
   }
 
@@ -85,18 +88,19 @@ export class AdminCityService {
    * @returns
    */
   async adminUpdateCity(updateCityDto: UpdateCityDto): Promise<BooleanMessage> {
-
-    const isCityExists = await this.cityRepository.findOne({ where: { city: updateCityDto.city } });
+    const isCityExists = await this.cityRepository.findOne({
+      where: { city: updateCityDto.city },
+    });
 
     if (isCityExists) {
-      throw new BadRequestException(this.i18n.t("city.CITY_ALREADY_EXISTS"))
+      throw new BadRequestException(this.i18n.t('city.CITY_ALREADY_EXISTS'));
     }
 
     const city = await this.cityRepository.findOne({
       where: { id: updateCityDto.id },
     });
     if (!city) {
-      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
+      throw new NotFoundException(this.i18n.t('city.CITY_NOT_FOUND'));
     }
 
     city.city = updateCityDto.city;
@@ -105,7 +109,7 @@ export class AdminCityService {
 
     return {
       success: true,
-      message: this.i18n.t("city.CITY_UPDATED_SUCCESSFULLY"),
+      message: this.i18n.t('city.CITY_UPDATED_SUCCESSFULLY'),
     };
   }
 
@@ -120,7 +124,7 @@ export class AdminCityService {
     });
 
     if (!city) {
-      throw new NotFoundException(this.i18n.t("city.CITY_NOT_FOUND"));
+      throw new NotFoundException(this.i18n.t('city.CITY_NOT_FOUND'));
     }
 
     return city;

@@ -15,7 +15,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { User } from './user/entities/user.entity';
 import { jwtConstants } from './user/constants/constants';
 import { I18nModule, AcceptLanguageResolver, QueryResolver, HeaderResolver } from 'nestjs-i18n';
+import { RolesModule } from './roles/roles.module';
 import * as path from 'path';
+import { Roles } from './roles/entities/roles.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -33,7 +35,7 @@ import * as path from 'path';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Donation,Emergency,City,User],
+      entities: [Donation,Emergency,City,User,Roles],
       // entities: ["dist/**/*.entity{.ts,.js}"],
       url : process.env.DB_URL,
       synchronize: Boolean(process.env.DB_SYNCHRONIZE),
@@ -43,7 +45,8 @@ import * as path from 'path';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: path.join(__dirname, "../src/", '/i18n/'),
+        // path: path.join(__dirname, "../src/", '/i18n/'),
+        path: path.join(__dirname, '../apps/api/i18n/'),
         watch: true,
       },
       resolvers: [
@@ -55,7 +58,8 @@ import * as path from 'path';
     
     EmergencyModule,
     CityModule,
-    UserModule
+    UserModule,
+    RolesModule
   ],
   controllers: [AppController],
   providers: [AppService],

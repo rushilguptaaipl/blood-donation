@@ -14,9 +14,11 @@ import { DeleteCityDto } from '../dto/admin/deleteCity.dto';
 import { ListCityDto } from '../dto/admin/listCity.dto';
 import { GetCityDto } from '@city/dto/admin/getCity.dto';
 import { UpdateCityDto } from '@city/dto/admin/updateCity.dto';
+import { PermissionGuard } from '@user/guards/permission.guard';
 
 @Controller('admin')
 @UseGuards(AuthGuard)
+@UseGuards(PermissionGuard)
 export class AdminCityController {
   constructor(private readonly AdminCityService: AdminCityService) {}
 
