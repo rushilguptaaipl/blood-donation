@@ -10,8 +10,8 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { I18nService } from 'nestjs-i18n';
-import { Roles } from 'src/roles/entities/roles.entity';
 import { ConfigService } from '@nestjs/config';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable()
 export class UserService {
@@ -27,7 +27,14 @@ export class UserService {
    * @param loginDto
    * @returns
    */
-  async login(loginDto: LoginDto): Promise<{ access_token: string; refresh_token: string }> {
+  async login(
+    loginDto: LoginDto,
+  ): Promise<{ access_token: string; refresh_token: string }> {
+    const bytes = CryptoJS.AES.decrypt(loginDto.password, 'prOrV8XPyf');
+    const password = bytes.toString(CryptoJS.enc.Utf8);
+
+    console.log(password);
+
     const user = await this.userRepository.findOne({
       where: { email: loginDto.email },
       relations: { role: true },
@@ -36,7 +43,7 @@ export class UserService {
       throw new NotFoundException(this.i18n.t('user.USER_NOT_FOUND'));
     }
 
-    const isMatch = await bcrypt.compare(loginDto.password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException(this.i18n.t('user.PASSWORD_INCORRECT'));
     }
@@ -83,8 +90,8 @@ export class UserService {
 
   /**
    * Update refresh token
-   * @param userId 
-   * @param rt 
+   * @param userId
+   * @param rt
    */
   async updateRt(userId: number, rt: string): Promise<void> {
     const user: User = await this.userRepository.findOne({

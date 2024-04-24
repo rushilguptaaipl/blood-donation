@@ -20,9 +20,10 @@ export class AdminCityRepository {
    */
   async adminListCity(listCityDto: ListCityDto) {
     const [city , count] :[City [] , number] = await this.cityRepository.createQueryBuilder('city')
-    .andWhere(new Brackets(qb =>{
-        listCityDto.search === null ? isEmpty : 
-        qb.where("LOWER(city.city) LIKE :city" , {city : `%${listCityDto.search.toLowerCase()}%`})
+    .where(new Brackets(qb =>{
+        if(listCityDto.search){
+          qb.where("LOWER(city.city) LIKE :city" , {city : `%${listCityDto.search.toLowerCase()}%`})
+        }
     }))
     .take(listCityDto.take)
     .skip(listCityDto.skip)
