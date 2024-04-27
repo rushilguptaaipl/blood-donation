@@ -26,7 +26,7 @@ export class PermissionGuard implements CanActivate {
         secret: jwtConstants.secret,
       });
 
-      const role: Roles = payload.user.role;
+      const role: Roles = payload.role;
 
       if (role.is_super_admin !== true) {
         throw new UnauthorizedException('Unauthorized');

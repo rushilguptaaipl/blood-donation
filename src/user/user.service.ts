@@ -49,6 +49,7 @@ export class UserService {
     }
 
     const tokens = await this.generateTokens(user.id, user.email, user);
+    
     await this.updateRt(user.id, tokens.refresh_token);
     return tokens;
   }
@@ -68,7 +69,7 @@ export class UserService {
     const jwtPayload = {
       userId: userId,
       email: email,
-      user: user,
+      role: user.role,
     };
 
     const [at, rt] = await Promise.all([

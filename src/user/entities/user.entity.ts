@@ -28,7 +28,7 @@ export class User extends BaseEntity {
   @ManyToOne(() => Roles, (roles) => roles.id)
   role: Roles;
 
-  @Column({nullable:true , type :"varchar" , length:5000})
+  @Column({nullable:true , type :"varchar" , length:11383})
   refresh_token : string
 
   @DeleteDateColumn()
