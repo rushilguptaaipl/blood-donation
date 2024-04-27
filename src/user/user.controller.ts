@@ -12,7 +12,7 @@ import { UserService } from '@user/user.service';
 import { Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 
-@Controller()
+@Controller("admin")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
