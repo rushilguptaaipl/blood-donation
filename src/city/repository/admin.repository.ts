@@ -25,6 +25,7 @@ export class AdminCityRepository {
           qb.where("LOWER(city.city) LIKE :city" , {city : `%${listCityDto.search.toLowerCase()}%`})
         }
     }))
+    .orderBy("city.createdAt" , "DESC")
     .take(listCityDto.take)
     .skip(listCityDto.skip)
     .getManyAndCount()

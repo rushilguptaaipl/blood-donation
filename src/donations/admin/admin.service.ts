@@ -1,24 +1,26 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Donation } from "../entities/donation.entity";
-import { AdminFilterDonationDto} from "../dto/admin/filterDonation.dto";
+import { AdminFilterDonationDto } from "../dto/admin/filterDonation.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { DeleteDonationDto } from "../dto/admin/deleteDonation.dto";
 import { AdminUpdateDonationDto } from "../dto/admin/updateDonation.dto";
 import { City } from "src/city/entities/city.entity";
-import { AdminGetDonationDto} from "../dto/admin/getDonation";
+import { AdminGetDonationDto } from "../dto/admin/getDonation";
 import { BooleanMessage } from "src/user/interface/booleanMessage.interface";
 import { AdminListDonationDto } from "@donations/dto/admin/listDonation.dto";
 import { I18nService } from "nestjs-i18n";
+import { AdminDonationRepository } from "@donations/repositories/admin/admin.repository";
 
 @Injectable()
 export class AdminDonationService {
 
     constructor(@InjectRepository(Donation)
     private donationRepo: Repository<Donation>,
-    @InjectRepository(City)
-    private readonly cityRepo : Repository<City>,
-    private readonly i18n : I18nService
+        @InjectRepository(City)
+        private readonly cityRepo: Repository<City>,
+        private readonly i18n: I18nService,
+        private readonly _adminDonationRepository : AdminDonationRepository
     ) { }
 
     /**
@@ -27,14 +29,14 @@ export class AdminDonationService {
      * @returns 
      */
     async adminFilterDonation(adminFilterDonationDto: AdminFilterDonationDto): Promise<Object> {
-        const [donation , count]: [Donation[] , number] = await this.donationRepo.findAndCount({
+        const [donation, count]: [Donation[], number] = await this.donationRepo.findAndCount({
             where: { blood_group: adminFilterDonationDto.blood_group, city: { city: adminFilterDonationDto.city } },
-            relations: { city: true }, take :adminFilterDonationDto.take , skip : adminFilterDonationDto.skip
+            relations: { city: true }, take: adminFilterDonationDto.take, skip: adminFilterDonationDto.skip
         });
         if (!donation.length) {
             throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
-        return {donation : donation , count : count};
+        return { donation: donation, count: count };
     }
 
     /**
@@ -42,12 +44,12 @@ export class AdminDonationService {
      * @param adminListDonationDto 
      * @returns 
      */
-    async adminListDonation(adminListDonationDto : AdminListDonationDto): Promise<Object> {
-        const [donation , count] : [Donation[] , number] = await this.donationRepo.findAndCount({ relations: { city: true }  , take: adminListDonationDto.take , skip : adminListDonationDto.skip});        
-        if (!donation.length) {
+    async adminListDonation(adminListDonationDto: AdminListDonationDto): Promise<{ donation: Donation[], count: number }> {
+        const result : {donation :Donation[] , count : number} = await this._adminDonationRepository.adminListDonation(adminListDonationDto);
+        if (!result.donation.length) {
             throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
-        return {donation : donation , count : count};
+        return result
     }
 
     /**
@@ -55,7 +57,7 @@ export class AdminDonationService {
      * @param deleteDonationDto 
      * @returns 
      */
-    async adminDeleteDonation(deleteDonationDto: DeleteDonationDto):Promise<BooleanMessage> {
+    async adminDeleteDonation(deleteDonationDto: DeleteDonationDto): Promise<BooleanMessage> {
         const donation: Donation = await this.donationRepo.findOne({
             where: { id: deleteDonationDto.id },
         });
@@ -63,11 +65,11 @@ export class AdminDonationService {
         if (!donation) {
             throw new NotFoundException("Donation Not Found")
         }
-         await this.donationRepo.softDelete(deleteDonationDto.id);
-         return {
-            success : true ,
-            message : this.i18n.t("donation.DONAR_DELETED_SUCCESSFULLY")
-         }
+        await this.donationRepo.softDelete(deleteDonationDto.id);
+        return {
+            success: true,
+            message: this.i18n.t("donation.DONAR_DELETED_SUCCESSFULLY")
+        }
     }
 
     /**
@@ -75,7 +77,7 @@ export class AdminDonationService {
      * @param adminUpdateDonationDto 
      * @returns 
      */
-    async adminUpdateDonation(adminUpdateDonationDto: AdminUpdateDonationDto):Promise<BooleanMessage> {
+    async adminUpdateDonation(adminUpdateDonationDto: AdminUpdateDonationDto): Promise<BooleanMessage> {
         const donation: Donation = await this.donationRepo.findOne({
             where: { id: adminUpdateDonationDto.id },
             relations: { city: true },
@@ -95,9 +97,9 @@ export class AdminDonationService {
         updateDonation.DOB = adminUpdateDonationDto?.DOB;
 
         if (adminUpdateDonationDto?.city) {
-            let isCityExists : City = await this.cityRepo.findOne({ where: { city: adminUpdateDonationDto.city } });
+            let isCityExists: City = await this.cityRepo.findOne({ where: { city: adminUpdateDonationDto.city } });
             if (!isCityExists) {
-                const city  = new City()
+                const city = new City()
                 city.city = adminUpdateDonationDto.city
                 city.createdAt = new Date(Date.now())
                 city.updatedAt = new Date(Date.now())
@@ -106,12 +108,12 @@ export class AdminDonationService {
             updateDonation.city = isCityExists;
         }
 
-         await this.donationRepo.update(adminUpdateDonationDto.id,updateDonation);
+        await this.donationRepo.update(adminUpdateDonationDto.id, updateDonation);
 
-         return {
-            success : true ,
-            message : this.i18n.t("donation.DONAR_UPDATED_SUCCESSFULLY")
-         }
+        return {
+            success: true,
+            message: this.i18n.t("donation.DONAR_UPDATED_SUCCESSFULLY")
+        }
     }
 
     /**
@@ -119,9 +121,9 @@ export class AdminDonationService {
      * @param adminGetDonationDto 
      * @returns 
      */
-    async adminGetDonation(adminGetDonationDto:AdminGetDonationDto):Promise<Donation>{
-        const donation = await this.donationRepo.findOne({where:{id:adminGetDonationDto.id},relations:{city:true}});
-        if(!donation){
+    async adminGetDonation(adminGetDonationDto: AdminGetDonationDto): Promise<Donation> {
+        const donation = await this.donationRepo.findOne({ where: { id: adminGetDonationDto.id }, relations: { city: true } });
+        if (!donation) {
             throw new NotFoundException(this.i18n.t("donation.DONATION_NOT_FOUND"))
         }
         return donation;

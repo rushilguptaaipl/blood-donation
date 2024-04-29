@@ -6,12 +6,13 @@ import { Donation } from './entities/donation.entity';
 import { City } from 'src/city/entities/city.entity';
 import { AdminDonationContoller } from './admin/admin.controller';
 import { AdminDonationService } from './admin/admin.service';
+import { AdminDonationRepository } from './repositories/admin/admin.repository';
 
 
 @Module({
   imports:[TypeOrmModule.forFeature([Donation,City])],
   controllers: [DonationsController,AdminDonationContoller],
-  providers: [DonationsService,AdminDonationService],
+  providers: [DonationsService,AdminDonationService ,AdminDonationRepository],
   exports:[DonationsService]
 })
 export class DonationsModule {}
