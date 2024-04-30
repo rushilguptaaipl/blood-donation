@@ -19,7 +19,7 @@ export class AdminDonationRepository {
             .leftJoinAndSelect("donation.city", "city")
             .where(new Brackets(qb => {
                 if (adminListDonationDto.city && adminListDonationDto.blood_group) {
-                    qb.where("donation.blood_graoup = :bloodGroup", { bloodGroup: adminListDonationDto.blood_group })
+                    qb.where("donation.blood_group = :bloodGroup", { bloodGroup: adminListDonationDto.blood_group })
                         .andWhere("city.city = :cityName", { cityName: adminListDonationDto.city })
                 }
             }))

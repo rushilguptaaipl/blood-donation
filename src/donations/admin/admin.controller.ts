@@ -8,7 +8,7 @@ import { AuthGuard } from "src/user/guards/auth.guard";
 import { AdminListDonationDto } from "@donations/dto/admin/listDonation.dto";
 
 @Controller("admin")
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class AdminDonationContoller {
     constructor(private readonly adminDonationService: AdminDonationService) { }
 
